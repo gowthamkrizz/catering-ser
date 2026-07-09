@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login � Stackly Premium Catering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/main.css?v=5.4" />
+  <style>
+    /* -- Portal Selector Tabs -- */
+    .portal-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .portal-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1.5px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      cursor: none;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .portal-tab i {
+      font-size: 1.3rem;
+      transition: color 0.25s;
+    }
+    .portal-tab:hover {
+      border-color: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+    }
+    .portal-tab.selected-user {
+      background: rgba(52, 152, 219, 0.1);
+      border-color: rgba(52, 152, 219, 0.5);
+      color: #5dade2;
+      box-shadow: 0 0 18px rgba(52, 152, 219, 0.12);
+    }
+    .portal-tab.selected-user i { color: #5dade2; }
+
+    .portal-tab.selected-admin {
+      background: rgba(200, 54, 42, 0.1);
+      border-color: rgba(200, 54, 42, 0.5);
+      color: var(--crimson);
+      box-shadow: 0 0 18px rgba(200, 54, 42, 0.14);
+    }
+    .portal-tab.selected-admin i { color: var(--crimson); }
+
+    /* animated tick badge */
+    .portal-tab .tick-badge {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      font-size: 0.55rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.25s ease;
+    }
+    .portal-tab.selected-user .tick-badge,
+    .portal-tab.selected-admin .tick-badge {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .portal-tab.selected-user .tick-badge {
+      background: #5dade2;
+      color: #fff;
+    }
+    .portal-tab.selected-admin .tick-badge {
+      background: var(--crimson);
+      color: #fff;
+    }
+
+    /* Portal label shown above form when selected */
+    .portal-hint {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      animation: fadeHintIn 0.3s ease both;
+    }
+    .portal-hint.show { display: flex; }
+    .portal-hint.hint-user {
+      background: rgba(52,152,219,0.08);
+      border: 1px solid rgba(52,152,219,0.2);
+      color: #5dade2;
+    }
+    .portal-hint.hint-admin {
+      background: rgba(200,54,42,0.08);
+      border: 1px solid rgba(200,54,42,0.2);
+      color: var(--crimson);
+    }
+    @keyframes fadeHintIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Sign In button disabled state */
+    .btn-auth-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* step label */
+    .step-label {
+      font-size: 0.67rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      font-family: var(--font-body);
+      opacity: 0.6;
+    }
+    .auth-page {
+      background: rgba(9, 4, 4, 0.5) !important;
+      backdrop-filter: blur(3px);
+    }
+  </style>
+</head>
+<body class="loading">
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-logo"><img src="assets/images/redlogo.webp" alt="Company Logo" style="height: 60px; width: auto;" /></div>
+    <div class="loader-line"></div>
+    <div class="loader-text">Welcome Back</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; filter: brightness(0.35);">
+    <source src="https://videos.pexels.com/video-files/3201170/3201170-uhd_2560_1440_25fps.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- LOGIN MAIN SECTION -->
+  <main class="auth-page">
+
+    <!-- Floating background decorative blobs -->
+    <div class="auth-blob auth-blob-1"></div>
+    <div class="auth-blob auth-blob-2"></div>
+
+    <!-- Back to Home -->
+    <a href="index.html" class="back-home-link">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+
+    <!-- Glassmorphic Auth Card -->
+    <div class="auth-card">
+      <div class="auth-header">
+        <div style="margin-bottom: 16px; display: flex; justify-content: center;">
+          <img src="assets/images/redlogo.webp" alt="Stackly Logo" style="height: 50px; width: auto;" />
+        </div>
+        <p>Select your portal, enter credentials, then sign in.</p>
+      </div>
+
+      <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+
+        <!-- STEP 1: Portal Selector -->
+        <div class="step-label">Step 1 � Choose your portal</div>
+        <div class="portal-selector">
+
+          <button type="button" class="portal-tab" id="tabUser" onclick="selectPortal('user')">
+            <span class="tick-badge"><i class="fas fa-check" style="color:#2ecc71;"></i></span>
+            <i class="far fa-user"></i>
+            User Portal
+          </button>
+
+          <button type="button" class="portal-tab" id="tabAdmin" onclick="selectPortal('admin')">
+            <span class="tick-badge"><i class="fas fa-check" style="color:#2ecc71;"></i></span>
+            <i class="fas fa-user-shield"></i>
+            Admin Portal
+          </button>
+
+        </div>
+
+        <!-- Portal hint strip (shown after selection) -->
+        <div class="portal-hint hint-user" id="hintUser">
+          <i class="far fa-user"></i> Signing in to <strong>User Dashboard</strong>
+        </div>
+        <div class="portal-hint hint-admin" id="hintAdmin">
+          <i class="fas fa-user-shield"></i> Signing in to <strong>Admin Dashboard</strong>
+        </div>
+
+        <!-- STEP 2: Credentials -->
+        <div class="step-label" style="margin-top:4px;">Step 2  Enter credentials</div>
+
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <div class="form-input-wrap">
+            <i class="far fa-user"></i>
+            <input type="text" id="fullname" placeholder="Enter your full name" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="form-input-wrap">
+            <i class="far fa-envelope"></i>
+            <input type="email" id="email" placeholder="Enter your email" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="form-input-wrap">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Enter your password" required />
+          </div>
+        </div>
+
+        <div class="auth-options">
+          <label class="remember-me">
+            <input type="checkbox" /> Remember Me
+          </label>
+          <a href="404.html" class="forgot-link">Forgot Password?</a>
+        </div>
+
+        <!-- STEP 3: Sign In -->
+        <button type="submit" class="btn-auth-primary" id="signInBtn" disabled>
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </button>
+
+        <!-- Validation hint shown if Sign In clicked without portal selection -->
+        <div id="portalError" style="display:none; color:var(--crimson); font-size:0.75rem; text-align:center; margin-top:-8px;">
+          ? Please select a portal above first.
+        </div>
+
+      </form>
+
+      <div class="auth-switch">
+        Don't have an account? <a href="signup.html">Create Account</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer style="padding: 20px 0; border: none; background: #070303;">
+    <div class="container">
+      <div class="footer-bottom" style="padding:0; display:flex; justify-content:center; opacity:0.5;">
+        <div class="footer-bottom-left" style="font-size:0.75rem;"> 2025 Stackly Premium Catering. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    /* --- State --- */
+    let selectedPortal = null; // 'user' | 'admin'
+
+    /* --- Derive display name from email --- */
+    function nameFromEmail(email) {
+      return email.split('@')[0]
+        .replace(/[._-]/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    /* --- Save session to localStorage --- */
+    function saveSession(email, name, role) {
+      localStorage.setItem('stackly_email', email);
+      localStorage.setItem('stackly_name',  name || nameFromEmail(email));
+      localStorage.setItem('stackly_role',  role);
+    }
+
+    /* --- Portal tab selection --- */
+    function selectPortal(role) {
+      selectedPortal = role;
+
+      // Reset both tabs
+      document.getElementById('tabUser').classList.remove('selected-user', 'selected-admin');
+      document.getElementById('tabAdmin').classList.remove('selected-user', 'selected-admin');
+      document.getElementById('hintUser').classList.remove('show');
+      document.getElementById('hintAdmin').classList.remove('show');
+
+      // Activate chosen tab
+      if (role === 'user') {
+        document.getElementById('tabUser').classList.add('selected-user');
+        document.getElementById('hintUser').classList.add('show');
+      } else {
+        document.getElementById('tabAdmin').classList.add('selected-admin');
+        document.getElementById('hintAdmin').classList.add('show');
+      }
+
+      // Enable the Sign In button now that a portal is chosen
+      document.getElementById('signInBtn').disabled = false;
+      document.getElementById('portalError').style.display = 'none';
+
+      // Focus email field for smooth UX
+      document.getElementById('email').focus();
+    }
+
+    /* --- Form submit --- */
+    function handleLogin(e) {
+      e.preventDefault();
+
+      if (!selectedPortal) {
+        document.getElementById('portalError').style.display = 'block';
+        document.getElementById('tabUser').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const btn      = document.getElementById('signInBtn');
+
+      if (!fullname || !email || !password) return;
+
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+      btn.disabled  = true;
+
+      setTimeout(() => {
+        saveSession(email, fullname, selectedPortal);
+        const dest = selectedPortal === 'admin' ? 'admin-dashboard.html' : 'user-dashboard.html';
+        window.location.href = dest;
+      }, 900);
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+

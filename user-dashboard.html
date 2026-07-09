@@ -1,0 +1,1749 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard &bull; Stackly Premium Catering</title>
+  <meta name="description" content="Manage your catering bookings, loyalty points and profile on Stackly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/main.css?v=5.4" />
+  <style>
+    /* -- Dashboard Layout -- */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { cursor: none; overflow-x: hidden; }
+    .dash-root {
+      display: flex;
+      min-height: 100vh;
+      background: #0a0a0a;
+      font-family: var(--font-body);
+    }
+
+    /* -- SIDEBAR -- */
+    .dash-sidebar {
+      width: 270px;
+      min-height: 100vh;
+      background: #111111;
+      border-right: 1px solid rgba(200,54,42,0.15);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 200;
+      transition: transform 0.4s cubic-bezier(0.76,0,0.24,1);
+      overflow: hidden;
+    }
+    .dash-sidebar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--crimson-dark), var(--crimson), var(--gold));
+    }
+    .sidebar-logo {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-close {
+      display: none;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 1.25rem;
+      cursor: none;
+      transition: color 0.2s;
+    }
+    .sidebar-close:hover {
+      color: var(--crimson);
+    }
+    .sidebar-logo a {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-logo a span { color: var(--crimson); }
+    .sidebar-logo .logo-dot {
+      width: 6px; height: 6px;
+      background: var(--crimson);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    /* Profile block */
+    .sidebar-profile {
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .profile-avatar {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--crimson-dark), var(--crimson));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+      border: 2px solid rgba(200,54,42,0.4);
+      position: relative;
+    }
+    .profile-avatar::after {
+      content: '';
+      position: absolute;
+      bottom: 1px; right: 1px;
+      width: 10px; height: 10px;
+      background: #2ecc71;
+      border-radius: 50%;
+      border: 2px solid #111;
+    }
+    .profile-info {}
+    .profile-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .profile-role {
+      font-size: 0.72rem;
+      color: var(--crimson);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .profile-loyalty {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .profile-loyalty span { color: var(--gold); font-weight: 600; }
+
+    /* Nav links */
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 0;
+      overflow-y: auto;
+    }
+    .sidebar-nav::-webkit-scrollbar { width: 3px; }
+    .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(200,54,42,0.3); border-radius: 2px; }
+    .nav-section-label {
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 16px 28px 8px;
+      font-weight: 600;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 28px;
+      color: rgba(240,235,225,0.55);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      transition: all 0.25s ease;
+      cursor: none;
+      position: relative;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(200,54,42,0);
+      transition: background 0.25s ease;
+    }
+    .sidebar-link:hover, .sidebar-link.active {
+      color: #fff;
+      border-left-color: var(--crimson);
+      background: rgba(200,54,42,0.08);
+    }
+    .sidebar-link .s-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      transition: background 0.25s;
+    }
+    .sidebar-link.active .s-icon,
+    .sidebar-link:hover .s-icon { background: rgba(200,54,42,0.2); color: var(--crimson); }
+    .sidebar-link .s-badge {
+      margin-left: auto;
+      background: var(--crimson);
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    .sidebar-footer {
+      padding: 20px 28px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .sidebar-logout {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(240,235,225,0.45);
+      font-size: 0.85rem;
+      cursor: none;
+      transition: color 0.25s;
+      text-decoration: none;
+    }
+    .sidebar-logout:hover { color: var(--crimson); }
+    .sidebar-logout i { font-size: 0.95rem; }
+
+    /* -- MAIN CONTENT -- */
+    .dash-main {
+      margin-left: 270px;
+      flex: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    .dash-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 0 40px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 16px; }
+    .sidebar-toggle {
+      display: none;
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text);
+      font-size: 1rem;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      transition: all 0.2s;
+    }
+    .sidebar-toggle:hover { background: var(--crimson); border-color: var(--crimson); }
+    .topbar-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-btn {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      transition: all 0.25s;
+      position: relative;
+    }
+    .topbar-btn:hover { background: rgba(200,54,42,0.15); border-color: var(--crimson); color: var(--crimson); }
+    .topbar-btn .notif-dot {
+      position: absolute;
+      top: 7px; right: 7px;
+      width: 7px; height: 7px;
+      background: var(--crimson);
+      border-radius: 50%;
+      border: 1.5px solid #0a0a0a;
+      animation: pulse 2s infinite;
+    }
+    .topbar-avatar {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--crimson-dark), var(--crimson));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: none;
+      border: 1px solid rgba(200,54,42,0.4);
+    }
+
+    /* -- Dashboard Content -- */
+    .dash-content {
+      padding: 40px;
+      flex: 1;
+    }
+
+    /* Tabs */
+    .dash-tabs {
+      display: none; /* Tabs controlled by sidebar */
+    }
+    .dash-section { display: none; }
+    .dash-section.active { display: block; }
+
+    /* -- WELCOME BANNER -- */
+    .welcome-banner {
+      background: linear-gradient(135deg, rgba(200,54,42,0.12) 0%, rgba(200,155,60,0.06) 100%);
+      border: 1px solid rgba(200,54,42,0.2);
+      border-radius: 16px;
+      padding: 32px 36px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      animation: slideInDown 0.6s ease both;
+    }
+    @keyframes slideInDown {
+      from { opacity:0; transform: translateY(-20px); }
+      to   { opacity:1; transform: none; }
+    }
+    .welcome-banner::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(200,54,42,0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .welcome-banner::after {
+      content: '→';
+      position: absolute;
+      right: 36px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 4rem;
+      opacity: 0.15;
+    }
+    .welcome-banner h2 {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .welcome-banner h2 span { color: var(--crimson); font-style: italic; }
+    .welcome-banner p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* -- KPI CARDS -- */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: #141414;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s ease;
+      animation: fadeInUp 0.5s ease both;
+    }
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: none; }
+    }
+    .kpi-card:nth-child(1) { animation-delay: 0.1s; }
+    .kpi-card:nth-child(2) { animation-delay: 0.2s; }
+    .kpi-card:nth-child(3) { animation-delay: 0.3s; }
+    .kpi-card:nth-child(4) { animation-delay: 0.4s; }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--kpi-color, var(--crimson)), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    .kpi-card:hover { transform: translateY(-4px); border-color: rgba(200,54,42,0.25); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+    .kpi-card:hover::before { transform: scaleX(1); }
+    .kpi-card.gold { --kpi-color: var(--gold); }
+    .kpi-card.green { --kpi-color: #2ecc71; }
+    .kpi-card.blue  { --kpi-color: #3498db; }
+    .kpi-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(200,54,42,0.12);
+      color: var(--crimson);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      transition: transform 0.3s;
+    }
+    .kpi-card.gold .kpi-icon { background: rgba(200,155,60,0.12); color: var(--gold); }
+    .kpi-card.green .kpi-icon { background: rgba(46,204,113,0.12); color: #2ecc71; }
+    .kpi-card.blue  .kpi-icon { background: rgba(52,152,219,0.12); color: #3498db; }
+    .kpi-card:hover .kpi-icon { transform: scale(1.15); }
+    .kpi-num {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .kpi-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+    .kpi-trend {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .kpi-trend.up { background: rgba(46,204,113,0.12); color: #2ecc71; }
+    .kpi-trend.down { background: rgba(231,76,60,0.12); color: #e74c3c; }
+
+    /* -- TWO COLUMN LAYOUT -- */
+    .dash-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .dash-row.wide { grid-template-columns: 2fr 1fr; }
+    .dash-row.full { grid-template-columns: 1fr; }
+
+    /* -- CARD BASE -- */
+    .dash-card {
+      background: #141414;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      overflow: hidden;
+      animation: fadeInUp 0.5s ease both;
+    }
+    .card-head {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-head h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .card-head-action {
+      font-size: 0.78rem;
+      color: var(--crimson);
+      cursor: none;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .card-head-action:hover { color: var(--crimson-light); }
+    .card-body { padding: 24px; }
+
+    /* -- BOOKING CARDS -- */
+    .booking-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.2s;
+    }
+    .booking-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .booking-item:first-child { padding-top: 0; }
+    .booking-date-box {
+      width: 52px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .booking-date-day {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--crimson);
+      line-height: 1;
+    }
+    .booking-date-month {
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .booking-divider {
+      width: 1px;
+      height: 48px;
+      background: rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .booking-info { flex: 1; }
+    .booking-event {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .booking-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 14px;
+    }
+    .booking-meta span { display: flex; align-items: center; gap: 5px; }
+    .booking-meta i { color: var(--crimson); font-size: 0.7rem; }
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .status-confirmed { background: rgba(46,204,113,0.12); color: #2ecc71; border: 1px solid rgba(46,204,113,0.2); }
+    .status-pending   { background: rgba(200,155,60,0.12);  color: var(--gold); border: 1px solid rgba(200,155,60,0.2); }
+    .status-completed { background: rgba(52,152,219,0.12);  color: #3498db; border: 1px solid rgba(52,152,219,0.2); }
+    .status-cancelled { background: rgba(231,76,60,0.12);   color: #e74c3c; border: 1px solid rgba(231,76,60,0.2); }
+
+    /* -- ACTIVITY FEED -- */
+    .activity-list { display: flex; flex-direction: column; gap: 0; }
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      animation: fadeInUp 0.4s ease both;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--crimson);
+      flex-shrink: 0;
+      margin-top: 6px;
+      position: relative;
+    }
+    .activity-dot::after {
+      content: '';
+      position: absolute;
+      top: -3px; left: -3px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 1px solid var(--crimson);
+      opacity: 0.3;
+    }
+    .activity-text { font-size: 0.83rem; color: var(--text-muted); line-height: 1.5; }
+    .activity-text strong { color: var(--text); font-weight: 500; }
+    .activity-time { margin-left: auto; font-size: 0.72rem; color: var(--text-light); flex-shrink: 0; }
+
+    /* -- LOYALTY RING -- */
+    .loyalty-section { text-align: center; padding: 8px 0; }
+    .loyalty-ring-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .loyalty-ring {
+      width: 130px; height: 130px;
+      transform: rotate(-90deg);
+    }
+    .loyalty-ring circle {
+      fill: none;
+      stroke-width: 8;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .ring-bg { stroke: rgba(255,255,255,0.07); }
+    .ring-fill { stroke: url(#loyaltyGrad); stroke-linecap: round; }
+    .loyalty-center {
+      position: absolute;
+      text-align: center;
+    }
+    .loyalty-pts {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+    .loyalty-pts-label { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; display: block; }
+    .loyalty-tier-name {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .loyalty-next {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .loyalty-perks { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .loyalty-perk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .loyalty-perk i { color: var(--gold); font-size: 0.85rem; }
+
+    /* -- QUICK MENU GRID -- */
+    .menu-pref-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .pref-card {
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3/2;
+      cursor: none;
+      transition: transform 0.3s ease, border-color 0.3s;
+    }
+    .pref-card:hover { transform: scale(1.03); border-color: rgba(200,54,42,0.3); }
+    .pref-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); transition: filter 0.3s; }
+    .pref-card:hover img { filter: brightness(0.45); }
+    .pref-card-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 8px 10px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #fff;
+    }
+    .pref-heart {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: rgba(200,54,42,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #fff;
+    }
+
+    /* -- TABLES -- */
+    .dash-table-wrap { overflow-x: auto; }
+    .dash-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .dash-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      white-space: nowrap;
+    }
+    .dash-table td {
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: middle;
+    }
+    .dash-table tr:last-child td { border-bottom: none; }
+    .dash-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .dash-table .event-name { color: var(--text); font-weight: 500; }
+    .dash-table .amount { color: var(--gold); font-weight: 600; font-family: var(--font-heading); }
+
+    /* -- PROFILE FORM -- */
+    .profile-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .profile-avatar-section {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 24px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 28px;
+    }
+    .profile-big-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--crimson-dark), var(--crimson));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 600;
+      color: #fff;
+      border: 3px solid rgba(200,54,42,0.4);
+      flex-shrink: 0;
+    }
+    .profile-avatar-info h4 { color: #fff; font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+    .profile-avatar-info p { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 12px; }
+    .dash-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dash-form-group.full { grid-column: 1 / -1; }
+    .dash-form-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .dash-form-group input,
+    .dash-form-group select,
+    .dash-form-group textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+    }
+    .dash-form-group input:focus,
+    .dash-form-group select:focus,
+    .dash-form-group textarea:focus {
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 3px rgba(200,54,42,0.1);
+    }
+    .dash-form-group textarea { resize: vertical; min-height: 100px; }
+
+    /* -- NOTIFICATIONS -- */
+    .notif-list { display: flex; flex-direction: column; gap: 0; }
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.2s;
+      cursor: none;
+    }
+    .notif-item:hover { background: rgba(255,255,255,0.02); }
+    .notif-item.unread { border-left: 3px solid var(--crimson); }
+    .notif-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .notif-icon.red { background: rgba(200,54,42,0.15); color: var(--crimson); }
+    .notif-icon.gold { background: rgba(200,155,60,0.15); color: var(--gold); }
+    .notif-icon.green { background: rgba(46,204,113,0.15); color: #2ecc71; }
+    .notif-icon.blue { background: rgba(52,152,219,0.15); color: #3498db; }
+    .notif-body { flex: 1; }
+    .notif-title { font-size: 0.85rem; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+    .notif-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+    .notif-time { font-size: 0.7rem; color: var(--text-light); white-space: nowrap; margin-top: 4px; }
+
+    /* -- TOAST -- */
+    .toast-container {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      background: #1a1a1a;
+      border: 1px solid rgba(200,54,42,0.3);
+      border-radius: 12px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+      max-width: 360px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      animation: slideInRight 0.4s ease;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+    @keyframes slideInRight {
+      from { opacity:0; transform: translateX(30px); }
+      to   { opacity:1; transform: none; }
+    }
+    .toast i { color: var(--crimson); font-size: 1rem; }
+    .toast.success { border-color: rgba(46,204,113,0.3); }
+    .toast.success i { color: #2ecc71; }
+
+    /* -- HAMBURGER OVERLAY -- */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 199;
+    }
+    .sidebar-overlay.show { display: block; }
+
+    /* -- RESPONSIVE -- */
+    @media (max-width: 1200px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .dash-row.wide { grid-template-columns: 1fr; }
+      .menu-pref-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .dash-sidebar { transform: translateX(-100%); }
+      .dash-sidebar.open { transform: translateX(0); }
+      .dash-main { margin-left: 0; }
+      .sidebar-toggle { display: flex; }
+      .sidebar-overlay.show { display: block; }
+      .sidebar-close { display: block !important; }
+    }
+    @media (max-width: 700px) {
+      .dash-content { padding: 24px 20px; }
+      .dash-topbar { padding: 0 20px; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .dash-row { grid-template-columns: 1fr; }
+      .profile-form-grid { grid-template-columns: 1fr; }
+      .menu-pref-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      .welcome-banner::after { display: none; }
+    }
+  </style>
+</head>
+<body class="loading">
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-logo"><img src="assets/images/redlogo.webp" alt="Company Logo" style="height: 60px; width: auto;" /></div>
+    <div class="loader-line"></div>
+    <div class="loader-text">My Dashboard</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="dash-root">
+
+    <!-- ------------------- SIDEBAR ------------------- -->
+    <aside class="dash-sidebar" id="dashSidebar">
+      <div class="sidebar-logo">
+        <a href="index.html">
+          <img src="assets/images/redlogo.webp" alt="Stackly Logo" style="height: 38px; width: auto;" />
+          <i class="fas fa-utensils" style="color: var(--gold); font-size: 1.1rem; margin-left: 2px;"></i>
+        </a>
+        <button class="sidebar-close" id="sidebarCloseBtn" title="Close menu"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="sidebar-profile">
+        <div class="profile-avatar" id="sidebarAvatar">U</div>
+        <div class="profile-info">
+          <div class="profile-role" id="sidebarEmail" style="font-size:0.72rem;color:var(--text-muted);word-break:break-all;"></div>
+          <div class="profile-loyalty"><i class="fas fa-star" style="color:var(--gold);"></i> <span>2,450</span> points</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a href="#" class="sidebar-link active" data-section="overview" id="link-overview">
+          <span class="s-icon"><i class="fas fa-th-large"></i></span>
+          Overview
+        </a>
+        <a href="#" class="sidebar-link" data-section="bookings" id="link-bookings">
+          <span class="s-icon"><i class="fas fa-calendar-check"></i></span>
+          My Bookings
+          <span class="s-badge">3</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="menu" id="link-menu">
+          <span class="s-icon"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i></span>
+          Menu Preferences
+        </a>
+        <a href="#" class="sidebar-link" data-section="history" id="link-history">
+          <span class="s-icon"><i class="fas fa-history"></i></span>
+          Order History
+        </a>
+
+        <div class="nav-section-label" style="margin-top:8px;">Account</div>
+        <a href="#" class="sidebar-link" data-section="profile" id="link-profile">
+          <span class="s-icon"><i class="fas fa-user-circle"></i></span>
+          Profile Settings
+        </a>
+        <a href="#" class="sidebar-link" data-section="notifications" id="link-notifications">
+          <span class="s-icon"><i class="fas fa-bell"></i></span>
+          Notifications
+          <span class="s-badge">4</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="loyalty" id="link-loyalty">
+          <span class="s-icon"><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i></span>
+          Loyalty Rewards
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="sidebar-logout" onclick="logoutSession(event)">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- ------------------- MAIN ------------------- -->
+    <div class="dash-main">
+
+      <!-- Top Bar -->
+      <header class="dash-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+          <div class="topbar-title" id="topbarTitle">Overview</div>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-btn" title="Notifications" onclick="showSection('notifications')">
+            <i class="fas fa-bell"></i>
+            <span class="notif-dot"></span>
+          </button>
+          <div class="topbar-btn" title="Catering Service"><i class="fas fa-concierge-bell" style="color: var(--gold);"></i></div>
+          <div class="topbar-avatar" id="topbarAvatar">U</div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="dash-content">
+
+        <!-- -- OVERVIEW SECTION -- -->
+        <section class="dash-section active" id="section-overview">
+
+          <!-- Welcome Banner -->
+          <div class="welcome-banner">
+            <h2>Welcome back, <span id="welcomeName">Arjun</span> 🎯</h2>
+            <p>You have 3 upcoming events this month. Your next event is in <strong style="color:var(--crimson)">8 days</strong>.</p>
+          </div>
+
+          <!-- KPI Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <span class="kpi-trend up">+ Soon</span>
+              <div class="kpi-icon"><i class="fas fa-calendar-alt"></i></div>
+              <div class="kpi-num">Jul 15</div>
+              <div class="kpi-label">Next Event Date</div>
+            </div>
+            <div class="kpi-card gold">
+              <span class="kpi-trend up">+150</span>
+              <div class="kpi-icon"><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i></div>
+              <div class="kpi-num counter" data-target="2450" data-suffix="">2450</div>
+              <div class="kpi-label">Loyalty Points</div>
+            </div>
+            <div class="kpi-card green">
+              <span class="kpi-trend up">+2</span>
+              <div class="kpi-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="kpi-num counter" data-target="14" data-suffix="">14</div>
+              <div class="kpi-label">Total Events</div>
+            </div>
+            <div class="kpi-card blue">
+              <div class="kpi-icon"><i class="fas fa-user-clock"></i></div>
+              <div class="kpi-num">2 yrs</div>
+              <div class="kpi-label">Member Since 2023</div>
+            </div>
+          </div>
+
+          <!-- Row: Upcoming Bookings + Activity -->
+          <div class="dash-row wide">
+            <div class="dash-card">
+              <div class="card-head">
+                <h3>Upcoming Bookings</h3>
+                <a href="#" class="card-head-action" onclick="showSection('bookings');return false;">View All <i class="fas fa-arrow-right"></i></a>
+              </div>
+              <div class="card-body">
+                <div class="booking-item reveal">
+                  <div class="booking-date-box">
+                    <div class="booking-date-day">15</div>
+                    <div class="booking-date-month">Jul</div>
+                  </div>
+                  <div class="booking-divider"></div>
+                  <div class="booking-info">
+                    <div class="booking-event">Wedding Reception &bull; Mehra Family</div>
+                    <div class="booking-meta">
+                      <span><i class="fas fa-users"></i>150 guests</span>
+                      <span><i class="fas fa-map-marker-alt"></i>The Grand Ballroom</span>
+                    </div>
+                  </div>
+                  <span class="status-badge status-confirmed">Confirmed</span>
+                </div>
+                <div class="booking-item reveal stagger-1">
+                  <div class="booking-date-box">
+                    <div class="booking-date-day">22</div>
+                    <div class="booking-date-month">Jul</div>
+                  </div>
+                  <div class="booking-divider"></div>
+                  <div class="booking-info">
+                    <div class="booking-event">Corporate Dinner &bull; TechCorp Ltd.</div>
+                    <div class="booking-meta">
+                      <span><i class="fas fa-users"></i>60 guests</span>
+                      <span><i class="fas fa-map-marker-alt"></i>Office Terrace</span>
+                    </div>
+                  </div>
+                  <span class="status-badge status-pending">Pending</span>
+                </div>
+                <div class="booking-item reveal stagger-2">
+                  <div class="booking-date-box">
+                    <div class="booking-date-day">05</div>
+                    <div class="booking-date-month">Aug</div>
+                  </div>
+                  <div class="booking-divider"></div>
+                  <div class="booking-info">
+                    <div class="booking-event">Birthday Party &bull; 50th Celebration</div>
+                    <div class="booking-meta">
+                      <span><i class="fas fa-users"></i>80 guests</span>
+                      <span><i class="fas fa-map-marker-alt"></i>Home Garden</span>
+                    </div>
+                  </div>
+                  <span class="status-badge status-pending">Pending</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-card">
+              <div class="card-head">
+                <h3>Recent Activity</h3>
+              </div>
+              <div class="card-body" style="padding:16px 20px;">
+                <div class="activity-list">
+                  <div class="activity-item">
+                    <div class="activity-dot" style="background:#2ecc71;"></div>
+                    <div class="activity-text"><strong>Booking confirmed</strong> &bull; Wedding Reception on Jul 15</div>
+                    <div class="activity-time">2h ago</div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot" style="background:var(--gold);"></div>
+                    <div class="activity-text"><strong>+150 points</strong> earned from last event</div>
+                    <div class="activity-time">1d ago</div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot"></div>
+                    <div class="activity-text"><strong>Menu customized</strong> &bull; added 3 vegetarian options</div>
+                    <div class="activity-time">3d ago</div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot" style="background:#3498db;"></div>
+                    <div class="activity-text"><strong>Invoice paid</strong> &bull; &#8377;42,500 for Corporate Lunch</div>
+                    <div class="activity-time">5d ago</div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-dot" style="background:var(--gold);"></div>
+                    <div class="activity-text"><strong>Gold tier unlocked</strong> &bull; congratulations!</div>
+                    <div class="activity-time">1w ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row: Favourite Dishes + Loyalty -->
+          <div class="dash-row wide" style="margin-bottom:0;">
+            <div class="dash-card">
+              <div class="card-head">
+                <h3>Saved Menu Favourites</h3>
+                <a href="#" class="card-head-action" onclick="showSection('menu');return false;">Browse Menu <i class="fas fa-arrow-right"></i></a>
+              </div>
+              <div class="card-body">
+                <div class="menu-pref-grid">
+                  <div class="pref-card"><img src="assets/images/dish-main.webp" alt="Butter Chicken" /><div class="pref-card-label">Butter Chicken</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                  <div class="pref-card"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80" alt="Paneer Tikka" /><div class="pref-card-label">Paneer Tikka</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                  <div class="pref-card"><img src="assets/images/dish-starters.webp" alt="Biryani" /><div class="pref-card-label">Hyderabadi Biryani</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-card">
+              <div class="card-head">
+                <h3>Loyalty Status</h3>
+                <a href="#" class="card-head-action" onclick="showSection('loyalty');return false;">Details <i class="fas fa-arrow-right"></i></a>
+              </div>
+              <div class="card-body">
+                <div class="loyalty-section">
+                  <div class="loyalty-ring-wrap">
+                    <svg class="loyalty-ring" viewBox="0 0 130 130" id="loyaltyRingSvg">
+                      <defs>
+                        <linearGradient id="loyaltyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#C8362A"/>
+                          <stop offset="100%" stop-color="#C89B3C"/>
+                        </linearGradient>
+                      </defs>
+                      <circle class="ring-bg" cx="65" cy="65" r="55" />
+                      <circle class="ring-fill" id="loyaltyArc" cx="65" cy="65" r="55" stroke-dasharray="345.4" stroke-dashoffset="345.4" />
+                    </svg>
+                    <div class="loyalty-center">
+                      <span class="loyalty-pts">2,450</span>
+                      <span class="loyalty-pts-label">points</span>
+                    </div>
+                  </div>
+                  <div class="loyalty-tier-name"><i class="fas fa-medal" style="color:var(--gold);"></i> Gold Member</div>
+                  <div class="loyalty-next" style="font-size:0.78rem;color:var(--text-muted);margin-bottom:4px;">550 pts to Platinum</div>
+                  <div style="background:rgba(255,255,255,0.06);border-radius:4px;height:4px;width:100%;margin:10px 0;">
+                    <div style="background:linear-gradient(90deg,var(--crimson),var(--gold));height:100%;border-radius:4px;width:82%;transition:width 1.2s ease;"></div>
+                  </div>
+                  <div class="loyalty-perks">
+                    <div class="loyalty-perk"><i class="fas fa-check" style="color:#2ecc71;"></i>10% discount on all bookings</div>
+                    <div class="loyalty-perk"><i class="fas fa-check" style="color:#2ecc71;"></i>Priority event scheduling</div>
+                    <div class="loyalty-perk"><i class="fas fa-check" style="color:#2ecc71;"></i>Free menu tasting session</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- BOOKINGS SECTION -- -->
+        <section class="dash-section" id="section-bookings">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+            <div>
+              <h2 style="font-family:var(--font-heading);font-size:1.8rem;color:#fff;margin-bottom:4px;">My Bookings</h2>
+              <p style="color:var(--text-muted);font-size:0.85rem;">Manage all your catering event bookings</p>
+            </div>
+            <button class="btn btn-gold" style="cursor:none;" onclick="showToast('Booking form coming soon!','info')">
+              <i class="fas fa-plus"></i> New Booking
+            </button>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+            <button class="booking-filter-btn active" data-filter="all" onclick="filterBookings(this,'all')">All <span style="background:var(--crimson);color:#fff;padding:1px 7px;border-radius:10px;font-size:0.7rem;margin-left:4px;">6</span></button>
+            <button class="booking-filter-btn" data-filter="confirmed" onclick="filterBookings(this,'confirmed')">Confirmed</button>
+            <button class="booking-filter-btn" data-filter="pending" onclick="filterBookings(this,'pending')">Pending</button>
+            <button class="booking-filter-btn" data-filter="completed" onclick="filterBookings(this,'completed')">Completed</button>
+            <button class="booking-filter-btn" data-filter="cancelled" onclick="filterBookings(this,'cancelled')">Cancelled</button>
+          </div>
+
+          <div class="dash-card">
+            <div class="dash-table-wrap">
+              <table class="dash-table" id="bookingsTable">
+                <thead>
+                  <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Guests</th>
+                    <th>Package</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-status="confirmed">
+                    <td class="event-name">Wedding Reception</td>
+                    <td>15 Jul 2026</td>
+                    <td>150</td>
+                    <td>Premium</td>
+                    <td class="amount">&#8377;1,25,000</td>
+                    <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                    <td><button class="table-action-btn" onclick="showToast('Booking details opened','success')">View</button></td>
+                  </tr>
+                  <tr data-status="pending">
+                    <td class="event-name">Corporate Dinner</td>
+                    <td>22 Jul 2026</td>
+                    <td>60</td>
+                    <td>Business</td>
+                    <td class="amount">&#8377;48,000</td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                    <td><button class="table-action-btn" onclick="showToast('Booking details opened','success')">View</button></td>
+                  </tr>
+                  <tr data-status="pending">
+                    <td class="event-name">Birthday Party</td>
+                    <td>05 Aug 2026</td>
+                    <td>80</td>
+                    <td>Classic</td>
+                    <td class="amount">&#8377;62,000</td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                    <td><button class="table-action-btn" onclick="showToast('Booking details opened','success')">View</button></td>
+                  </tr>
+                  <tr data-status="completed">
+                    <td class="event-name">Anniversary Dinner</td>
+                    <td>10 Jun 2026</td>
+                    <td>40</td>
+                    <td>Classic</td>
+                    <td class="amount">&#8377;35,000</td>
+                    <td><span class="status-badge status-completed">Completed</span></td>
+                    <td><button class="table-action-btn" onclick="showToast('Invoice downloaded!','success')">Invoice</button></td>
+                  </tr>
+                  <tr data-status="completed">
+                    <td class="event-name">Corporate Lunch</td>
+                    <td>20 May 2026</td>
+                    <td>100</td>
+                    <td>Business</td>
+                    <td class="amount">&#8377;42,500</td>
+                    <td><span class="status-badge status-completed">Completed</span></td>
+                    <td><button class="table-action-btn" onclick="showToast('Invoice downloaded!','success')">Invoice</button></td>
+                  </tr>
+                  <tr data-status="cancelled">
+                    <td class="event-name">House Party</td>
+                    <td>02 Apr 2026</td>
+                    <td>30</td>
+                    <td>Lite</td>
+                    <td class="amount">&#8377;18,000</td>
+                    <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                    <td><button class="table-action-btn" onclick="showToast('Rebook initiated','info')">Rebook</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- MENU SECTION -- -->
+        <section class="dash-section" id="section-menu">
+          <div style="margin-bottom:28px;">
+            <h2 style="font-family:var(--font-heading);font-size:1.8rem;color:#fff;margin-bottom:4px;">Menu Preferences</h2>
+            <p style="color:var(--text-muted);font-size:0.85rem;">Your saved favourite dishes and dietary preferences</p>
+          </div>
+
+          <div class="dash-row" style="margin-bottom:24px;">
+            <div class="dash-card">
+              <div class="card-head"><h3>Dietary Preferences</h3></div>
+              <div class="card-body">
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                  <label style="display:flex;align-items:center;gap:12px;cursor:none;font-size:0.88rem;color:var(--text-muted);">
+                    <input type="checkbox" checked style="accent-color:var(--crimson);width:16px;height:16px;" /> Vegetarian options
+                  </label>
+                  <label style="display:flex;align-items:center;gap:12px;cursor:none;font-size:0.88rem;color:var(--text-muted);">
+                    <input type="checkbox" checked style="accent-color:var(--crimson);width:16px;height:16px;" /> Non-vegetarian
+                  </label>
+                  <label style="display:flex;align-items:center;gap:12px;cursor:none;font-size:0.88rem;color:var(--text-muted);">
+                    <input type="checkbox" style="accent-color:var(--crimson);width:16px;height:16px;" /> Gluten-free
+                  </label>
+                  <label style="display:flex;align-items:center;gap:12px;cursor:none;font-size:0.88rem;color:var(--text-muted);">
+                    <input type="checkbox" style="accent-color:var(--crimson);width:16px;height:16px;" /> Vegan
+                  </label>
+                  <label style="display:flex;align-items:center;gap:12px;cursor:none;font-size:0.88rem;color:var(--text-muted);">
+                    <input type="checkbox" checked style="accent-color:var(--crimson);width:16px;height:16px;" /> Jain food
+                  </label>
+                </div>
+                <button class="btn btn-gold" style="margin-top:20px;width:100%;justify-content:center;cursor:none;" onclick="showToast('Preferences saved!','success')">Save Preferences</button>
+              </div>
+            </div>
+            <div class="dash-card">
+              <div class="card-head"><h3>Cuisine Preferences</h3></div>
+              <div class="card-body">
+                <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(200,54,42,0.15);border:1px solid rgba(200,54,42,0.3);color:var(--crimson);font-size:0.8rem;cursor:none;">North Indian</span>
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(200,54,42,0.15);border:1px solid rgba(200,54,42,0.3);color:var(--crimson);font-size:0.8rem;cursor:none;">South Indian</span>
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text-muted);font-size:0.8rem;cursor:none;">Chinese</span>
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(200,155,60,0.12);border:1px solid rgba(200,155,60,0.25);color:var(--gold);font-size:0.8rem;cursor:none;">Mughlai</span>
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text-muted);font-size:0.8rem;cursor:none;">Continental</span>
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(200,54,42,0.15);border:1px solid rgba(200,54,42,0.3);color:var(--crimson);font-size:0.8rem;cursor:none;">Rajasthani</span>
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text-muted);font-size:0.8rem;cursor:none;">Mediterranean</span>
+                  <span style="padding:8px 16px;border-radius:20px;background:rgba(200,155,60,0.12);border:1px solid rgba(200,155,60,0.25);color:var(--gold);font-size:0.8rem;cursor:none;">Bengali</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dash-card">
+            <div class="card-head"><h3>Favourite Dishes <span style="font-size:0.8rem;color:var(--text-muted);font-weight:400;font-family:var(--font-body);">(6 saved)</span></h3></div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;">
+                <div class="pref-card" style="aspect-ratio:3/3;"><img src="assets/images/dish-main.webp" alt="Butter Chicken" /><div class="pref-card-label">Butter Chicken</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                <div class="pref-card" style="aspect-ratio:3/3;"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80" alt="Paneer Tikka" /><div class="pref-card-label">Paneer Tikka</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                <div class="pref-card" style="aspect-ratio:3/3;"><img src="assets/images/dish-starters.webp" alt="Biryani" /><div class="pref-card-label">Biryani</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                <div class="pref-card" style="aspect-ratio:3/3;"><img src="assets/images/south-indian-food.webp" alt="Dal Makhani" /><div class="pref-card-label">Dal Makhani</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                <div class="pref-card" style="aspect-ratio:3/3;"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80" alt="Gulab Jamun" /><div class="pref-card-label">Gulab Jamun</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+                <div class="pref-card" style="aspect-ratio:3/3;"><img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=400&q=80" alt="Tandoori Chicken" /><div class="pref-card-label">Tandoori Chicken</div><div class="pref-heart"><i class="fas fa-heart" style="color:var(--crimson);"></i></div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- HISTORY SECTION -- -->
+        <section class="dash-section" id="section-history">
+          <div style="margin-bottom:28px;">
+            <h2 style="font-family:var(--font-heading);font-size:1.8rem;color:#fff;margin-bottom:4px;">Order History</h2>
+            <p style="color:var(--text-muted);font-size:0.85rem;">Complete history of all your catering events</p>
+          </div>
+          <div class="dash-card">
+            <div class="dash-table-wrap">
+              <table class="dash-table">
+                <thead>
+                  <tr><th>Event</th><th>Date</th><th>Guests</th><th>Package</th><th>Amount</th><th>Rating</th><th>Invoice</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="event-name">Anniversary Dinner</td><td>10 Jun 2026</td><td>40</td><td>Classic</td><td class="amount">&#8377;35,000</td><td><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i></td><td><button class="table-action-btn" onclick="showToast('Invoice downloaded!','success')">PDF</button></td></tr>
+                  <tr><td class="event-name">Corporate Lunch</td><td>20 May 2026</td><td>100</td><td>Business</td><td class="amount">&#8377;42,500</td><td><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i></td><td><button class="table-action-btn" onclick="showToast('Invoice downloaded!','success')">PDF</button></td></tr>
+                  <tr><td class="event-name">House Warming</td><td>14 Mar 2026</td><td>60</td><td>Classic</td><td class="amount">&#8377;28,000</td><td><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i></td><td><button class="table-action-btn" onclick="showToast('Invoice downloaded!','success')">PDF</button></td></tr>
+                  <tr><td class="event-name">Engagement Ceremony</td><td>28 Jan 2026</td><td>200</td><td>Premium</td><td class="amount">&#8377;1,80,000</td><td><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i></td><td><button class="table-action-btn" onclick="showToast('Invoice downloaded!','success')">PDF</button></td></tr>
+                  <tr><td class="event-name">Office Party</td><td>31 Dec 2025</td><td>75</td><td>Business</td><td class="amount">&#8377;55,000</td><td><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i></td><td><button class="table-action-btn" onclick="showToast('Invoice downloaded!','success')">PDF</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- PROFILE SECTION -- -->
+        <section class="dash-section" id="section-profile">
+          <div style="margin-bottom:28px;">
+            <h2 style="font-family:var(--font-heading);font-size:1.8rem;color:#fff;margin-bottom:4px;">Profile Settings</h2>
+            <p style="color:var(--text-muted);font-size:0.85rem;">Update your personal information and preferences</p>
+          </div>
+
+          <div class="dash-card">
+            <div class="card-body">
+              <div class="profile-avatar-section">
+                <div class="profile-big-avatar">A</div>
+                <div class="profile-avatar-info">
+                  <h4>Arjun Sharma</h4>
+                  <p>arjun.sharma@email.com &bull; Gold Member since 2023</p>
+                  <button class="btn btn-outline" style="font-size:0.78rem;padding:8px 16px;cursor:none;" onclick="showToast('Photo upload coming soon!','info')">
+                    <i class="fas fa-camera"></i> Change Photo
+                  </button>
+                </div>
+              </div>
+
+              <form onsubmit="event.preventDefault();showToast('Profile updated successfully!','success');">
+                <div class="profile-form-grid">
+                  <div class="dash-form-group">
+                    <label>First Name</label>
+                    <input type="text" value="Arjun" />
+                  </div>
+                  <div class="dash-form-group">
+                    <label>Last Name</label>
+                    <input type="text" value="Sharma" />
+                  </div>
+                  <div class="dash-form-group">
+                    <label>Email Address</label>
+                    <input type="email" value="arjun.sharma@email.com" />
+                  </div>
+                  <div class="dash-form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" value="+91 98765 43210" />
+                  </div>
+                  <div class="dash-form-group full">
+                    <label>Address</label>
+                    <textarea>42, Park Lane, Bandra West, Mumbai &bull; 400050</textarea>
+                  </div>
+                  <div class="dash-form-group">
+                    <label>City</label>
+                    <input type="text" value="Mumbai" />
+                  </div>
+                  <div class="dash-form-group">
+                    <label>Preferred Contact</label>
+                    <select>
+                      <option>Phone</option>
+                      <option>Email</option>
+                      <option>WhatsApp</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+                  <button type="submit" class="btn btn-gold" style="cursor:none;"><i class="fas fa-save"></i> Save Changes</button>
+                  <button type="button" class="btn btn-outline" style="cursor:none;" onclick="showToast('Changes discarded','info')">Discard</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="dash-card" style="margin-top:20px;">
+            <div class="card-head"><h3>Change Password</h3></div>
+            <div class="card-body">
+              <form onsubmit="event.preventDefault();showToast('Password changed!','success');" style="max-width:420px;">
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                  <div class="dash-form-group">
+                    <label>Current Password</label>
+                    <input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                  </div>
+                  <div class="dash-form-group">
+                    <label>New Password</label>
+                    <input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                  </div>
+                  <div class="dash-form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                  </div>
+                  <button type="submit" class="btn btn-gold" style="cursor:none;width:fit-content;"><i class="fas fa-lock"></i> Update Password</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- NOTIFICATIONS SECTION -- -->
+        <section class="dash-section" id="section-notifications">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+            <div>
+              <h2 style="font-family:var(--font-heading);font-size:1.8rem;color:#fff;margin-bottom:4px;">Notifications</h2>
+              <p style="color:var(--text-muted);font-size:0.85rem;">4 unread notifications</p>
+            </div>
+            <button class="btn btn-outline" style="cursor:none;font-size:0.8rem;padding:10px 20px;" onclick="showToast('All marked as read','success')">Mark all as read</button>
+          </div>
+
+          <div class="dash-card">
+            <div class="notif-list">
+              <div class="notif-item unread">
+                <div class="notif-icon red"><i class="fas fa-calendar-check"></i></div>
+                <div class="notif-body">
+                  <div class="notif-title">Booking Confirmed &bull; Wedding Reception</div>
+                  <div class="notif-desc">Your booking for Jul 15 has been confirmed. Our team will contact you within 24 hours for menu finalisation.</div>
+                  <div class="notif-time">2 hours ago</div>
+                </div>
+              </div>
+              <div class="notif-item unread">
+                <div class="notif-icon gold"><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i></div>
+                <div class="notif-body">
+                  <div class="notif-title">150 Loyalty Points Earned!</div>
+                  <div class="notif-desc">You've earned 150 points from your last event. You now have 2,450 total points. Only 550 more to reach Platinum!</div>
+                  <div class="notif-time">1 day ago</div>
+                </div>
+              </div>
+              <div class="notif-item unread">
+                <div class="notif-icon green"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i></div>
+                <div class="notif-body">
+                  <div class="notif-title">New Summer Menu Available</div>
+                  <div class="notif-desc">Explore our exclusive summer 2026 menu featuring 15+ new dishes perfect for outdoor events.</div>
+                  <div class="notif-time">3 days ago</div>
+                </div>
+              </div>
+              <div class="notif-item unread">
+                <div class="notif-icon blue"><i class="fas fa-tag"></i></div>
+                <div class="notif-body">
+                  <div class="notif-title">Special Offer: 15% off on Corporate Events</div>
+                  <div class="notif-desc">As a Gold member, enjoy exclusive 15% discount on all corporate catering booked before August 31.</div>
+                  <div class="notif-time">5 days ago</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-icon green"><i class="fas fa-check-circle"></i></div>
+                <div class="notif-body">
+                  <div class="notif-title">Event Completed &bull; Corporate Lunch</div>
+                  <div class="notif-desc">Thank you for choosing Stackly! Your invoice for &#8377;42,500 has been generated. Please rate your experience.</div>
+                  <div class="notif-time">1 week ago</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-icon gold"><i class="fas fa-trophy"></i></div>
+                <div class="notif-body">
+                  <div class="notif-title">Gold Tier Unlocked!</div>
+                  <div class="notif-desc">Congratulations! You've been upgraded to Gold membership with exclusive benefits including priority scheduling and 10% discount.</div>
+                  <div class="notif-time">2 weeks ago</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- LOYALTY SECTION -- -->
+        <section class="dash-section" id="section-loyalty">
+          <div style="margin-bottom:28px;">
+            <h2 style="font-family:var(--font-heading);font-size:1.8rem;color:#fff;margin-bottom:4px;">Loyalty Rewards</h2>
+            <p style="color:var(--text-muted);font-size:0.85rem;">Earn points with every booking and unlock exclusive benefits</p>
+          </div>
+
+          <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
+            <div class="kpi-card gold">
+              <div class="kpi-icon"><i class="fas fa-coins"></i></div>
+              <div class="kpi-num">2,450</div>
+              <div class="kpi-label">Available Points</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon"><i class="fas fa-fire" style="color:#e74c3c;font-size:0.75rem;margin-right:4px;"></i></div>
+              <div class="kpi-num">5,200</div>
+              <div class="kpi-label">Lifetime Points Earned</div>
+            </div>
+            <div class="kpi-card green">
+              <div class="kpi-icon"><i class="fas fa-gift"></i></div>
+              <div class="kpi-num">3</div>
+              <div class="kpi-label">Rewards Redeemed</div>
+            </div>
+          </div>
+
+          <!-- Tier Cards -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+            <div style="padding:24px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+              <div style="font-size:2rem;margin-bottom:10px;"><i class="fas fa-medal" style="color:#cd7f32;"></i></div>
+              <div style="font-family:var(--font-heading);font-size:1.1rem;color:#cd7f32;margin-bottom:6px;">Bronze</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);">0 &ndash; 999 pts</div>
+            </div>
+            <div style="padding:24px;border-radius:14px;background:rgba(200,155,60,0.08);border:1px solid rgba(200,155,60,0.3);text-align:center;position:relative;">
+              <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:0.65rem;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;font-weight:600;">Current</div>
+              <div style="font-size:2rem;margin-bottom:10px;"><i class="fas fa-medal" style="color:var(--gold);"></i></div>
+              <div style="font-family:var(--font-heading);font-size:1.1rem;color:var(--gold);margin-bottom:6px;">Gold</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);">1,000 &ndash; 2,999 pts</div>
+            </div>
+            <div style="padding:24px;border-radius:14px;background:#141414;border:1px solid rgba(255,255,255,0.06);text-align:center;opacity:0.6;">
+              <div style="font-size:2rem;margin-bottom:10px;"><i class="fas fa-crown" style="color:#b0c4de;"></i></div>
+              <div style="font-family:var(--font-heading);font-size:1.1rem;color:#b0c4de;margin-bottom:6px;">Platinum</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);">3,000+ pts &ndash; Need 550 more</div>
+            </div>
+          </div>
+
+          <!-- Redeem Options -->
+          <div class="dash-card">
+            <div class="card-head"><h3>Redeem Points</h3></div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
+                <div style="padding:20px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);transition:border-color 0.3s;">
+                  <div style="font-size:2rem;margin-bottom:12px;"><i class="fas fa-ticket-alt" style="color:var(--gold);"></i></div>
+                  <div style="font-weight:600;color:var(--text);margin-bottom:6px;font-size:0.9rem;">&#8377;500 Discount Voucher</div>
+                  <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px;">Redeem on your next booking</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="color:var(--gold);font-size:0.82rem;font-weight:600;">500 pts</span>
+                    <button class="btn btn-gold" style="padding:6px 14px;font-size:0.75rem;cursor:none;" onclick="showToast('Voucher redeemed! Check email.','success')">Redeem</button>
+                  </div>
+                </div>
+                <div style="padding:20px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+                  <div style="font-size:2rem;margin-bottom:12px;"><i class="fas fa-utensils" style="color:var(--gold);"></i></div>
+                  <div style="font-weight:600;color:var(--text);margin-bottom:6px;font-size:0.9rem;">Free Menu Tasting</div>
+                  <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px;">For 2 people at our kitchen</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="color:var(--gold);font-size:0.82rem;font-weight:600;">1,000 pts</span>
+                    <button class="btn btn-gold" style="padding:6px 14px;font-size:0.75rem;cursor:none;" onclick="showToast('Tasting session booked!','success')">Redeem</button>
+                  </div>
+                </div>
+                <div style="padding:20px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);">
+                  <div style="font-size:2rem;margin-bottom:12px;"><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i><i class="fas fa-star" style="color:var(--gold);"></i></div>
+                  <div style="font-weight:600;color:var(--text);margin-bottom:6px;font-size:0.9rem;">Private Chef Consultation</div>
+                  <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:14px;">1-hour session with our head chef</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="color:var(--gold);font-size:0.82rem;font-weight:600;">2,000 pts</span>
+                    <button class="btn btn-gold" style="padding:6px 14px;font-size:0.75rem;cursor:none;" onclick="showToast('Consultation booked!','success')">Redeem</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Inline action button CSS -->
+  <style>
+    .table-action-btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: rgba(200,54,42,0.12);
+      border: 1px solid rgba(200,54,42,0.2);
+      color: var(--crimson);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: none;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    .table-action-btn:hover { background: var(--crimson); color: #fff; }
+    .booking-filter-btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: none;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    .booking-filter-btn:hover, .booking-filter-btn.active {
+      background: rgba(200,54,42,0.12);
+      border-color: rgba(200,54,42,0.3);
+      color: var(--crimson);
+    }
+  </style>
+
+  <script src="js/main.js"></script>
+  <script>
+    /* -- Sidebar Navigation -- */
+    function showSection(name) {
+      document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      const el = document.getElementById('section-' + name);
+      const link = document.getElementById('link-' + name);
+      if (el) el.classList.add('active');
+      if (link) link.classList.add('active');
+      document.getElementById('topbarTitle').textContent = link ? link.querySelector('.s-icon').nextSibling.textContent.trim() : name;
+      // Close mobile sidebar
+      document.getElementById('dashSidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const section = link.dataset.section;
+        if (section) showSection(section);
+      });
+    });
+
+    /* -- Mobile Sidebar Toggle -- */
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const dashSidebar = document.getElementById('dashSidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    sidebarToggle.addEventListener('click', () => {
+      dashSidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('show');
+    });
+    sidebarOverlay.addEventListener('click', () => {
+      dashSidebar.classList.remove('open');
+      sidebarOverlay.classList.remove('show');
+    });
+    if (sidebarCloseBtn) {
+      sidebarCloseBtn.addEventListener('click', () => {
+        dashSidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+      });
+    }
+
+    /* -- Loyalty Ring Animation -- */
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const arc = document.getElementById('loyaltyArc');
+        if (arc) {
+          const total = 345.4;
+          const pct = 2450 / 3000; // gold/platinum ratio
+          arc.style.strokeDashoffset = total - (total * pct);
+        }
+      }, 800);
+    });
+
+    /* -- Booking Filter -- */
+    function filterBookings(btn, filter) {
+      document.querySelectorAll('.booking-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#bookingsTable tbody tr').forEach(row => {
+        row.style.display = (filter === 'all' || row.dataset.status === filter) ? '' : 'none';
+      });
+    }
+
+    /* -- Toast Notifications -- */
+    function showToast(msg, type = 'info') {
+      const icons = { success: 'fa-check-circle', info: 'fa-info-circle', error: 'fa-exclamation-circle' };
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast ' + (type === 'success' ? 'success' : '');
+      toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(30px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    /* -- Counter Animations -- */
+    function animCounter(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || '';
+      const start = performance.now();
+      const dur = 1800;
+      function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(e * target).toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString() + suffix;
+      }
+      requestAnimationFrame(tick);
+    }
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.counter').forEach(animCounter);
+      }, 600);
+    });
+  </script>
+
+  <script>
+    /* -- Populate dashboard from login session -- */
+    (function () {
+      const name  = localStorage.getItem('stackly_name')  || 'Guest User';
+      const email = localStorage.getItem('stackly_email') || '';
+      const initial = name.charAt(0).toUpperCase();
+
+      const sidebarAvatar = document.getElementById('sidebarAvatar');
+      const sidebarEmail  = document.getElementById('sidebarEmail');
+      const topbarAvatar  = document.getElementById('topbarAvatar');
+      const welcomeName   = document.getElementById('welcomeName');
+
+      if (sidebarAvatar) sidebarAvatar.textContent = initial;
+      if (sidebarEmail)  sidebarEmail.textContent  = email;
+      if (topbarAvatar)  topbarAvatar.textContent  = initial;
+      if (welcomeName)   welcomeName.textContent   = name;
+    })();
+
+    function logoutSession(e) {
+      if (e) e.preventDefault();
+      localStorage.removeItem('stackly_email');
+      localStorage.removeItem('stackly_name');
+      localStorage.removeItem('stackly_role');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+

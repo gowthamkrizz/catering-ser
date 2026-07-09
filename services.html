@@ -1,0 +1,621 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services � Stackly Premium Catering</title>
+  <meta name="description" content="Explore Stackly's full range of premium catering services � wedding, corporate, birthday, outdoor, buffet, live counters and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/main.css?v=5.4" />
+</head>
+<body class="loading">
+  <div id="loader">
+    <div class="loader-logo"><img src="assets/images/redlogo.webp" alt="Company Logo" style="height: 60px; width: auto;" /></div>
+    <div class="loader-line"></div>
+    <div class="loader-text">Our Services</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  </div>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+  <div id="scroll-progress"></div>
+
+  <!-- ---- NAVBAR ---- -->
+    <!-- Top Utility Information Bar -->
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-bar-item"><i class="fas fa-phone-alt"></i> <a href="tel:+919876543210">+91 98765 43210</a></div>
+      <span class="top-bar-separator">|</span>
+      <div class="top-bar-item"><i class="fas fa-envelope"></i> <a href="mailto:hello@stacklycatering.com">hello@stacklycatering.com</a></div>
+      <span class="top-bar-separator">|</span>
+      <div class="top-bar-item"><i class="fas fa-clock"></i> <span>Mon-Sun : 9 AM - 10 PM</span></div>
+      <span class="top-bar-separator">|</span>
+      <div class="top-bar-item"><i class="fas fa-map-marker-alt"></i> <span>Salem</span></div>
+    </div>
+  </div>
+
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/redlogo.webp" alt="Company Logo" style="height: 40px; width: auto;" />
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        
+        <div class="dropdown">
+          <a href="services.html" class="dropdown-toggle">Services <i class="fas fa-chevron-down"></i></a>
+          <div class="dropdown-menu">
+            <a href="services.html#wedding-catering"><i class="fas fa-heart" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Wedding Catering</a>
+            <a href="services.html#corporate-catering"><i class="fas fa-briefcase" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Corporate Catering</a>
+            <a href="services.html#birthday-parties"><i class="fas fa-birthday-cake" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Birthday Parties</a>
+            <a href="services.html#outdoor-catering"><i class="fas fa-tree" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Outdoor Catering</a>
+                        <div class="dropdown-divider"></div>
+            <a href="services.html#housewarming-events"><i class="fas fa-home" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Housewarming Events</a>
+            <a href="services.html#private-dining"><i class="fas fa-utensils" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Private Dining</a>
+            <a href="services.html#live-food-stations"><i class="fas fa-fire" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Live Food Stations</a>
+            <a href="services.html#buffet-catering"><i class="fas fa-concierge-bell" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Buffet Catering</a>
+            <a href="services.html#event-planning"><i class="fas fa-calendar-check" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Event Planning</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a href="menu.html" class="dropdown-toggle">Menu <i class="fas fa-chevron-down"></i></a>
+          <div class="dropdown-menu">
+            <a href="menu.html#filter-starters"><i class="fas fa-drumstick-bite" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Starters</a>
+            <a href="menu.html#filter-main"><i class="fas fa-utensils" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Main Course</a>
+                        <div class="dropdown-divider"></div>
+            <a href="menu.html#filter-south-indian"><i class="fas fa-seedling" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> South Indian</a>
+            <a href="menu.html#filter-north-indian"><i class="fas fa-pepper-hot" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> North Indian</a>
+            <a href="menu.html#filter-chinese"><i class="fas fa-yin-yang" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Chinese</a>
+            <a href="menu.html#filter-continental"><i class="fas fa-globe-europe" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Continental</a>
+                        <div class="dropdown-divider"></div>
+            <a href="menu.html#filter-snacks"><i class="fas fa-fire-burner" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Live Counters</a>
+            <a href="menu.html#filter-desserts"><i class="fas fa-ice-cream" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Desserts</a>
+            <a href="menu.html#filter-drinks"><i class="fas fa-wine-glass" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Beverages</a>
+            <a href="menu.html"><i class="fas fa-list-ul" style="color:var(--gold);font-size:0.7rem;width:14px;text-align:center;flex-shrink:0;"></i> Custom Menus</a>
+          </div>
+        </div>
+
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a href="login.html" class="btn btn-gold nav-cta">Login</a>
+        <button class="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="menu.html">Menu</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html" class="btn btn-gold">Login</a>
+    <div class="mobile-menu-social">
+      <a href="404.html"><i class="fab fa-instagram"></i></a>
+      <a href="404.html"><i class="fab fa-facebook"></i></a>
+      <a href="404.html"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+
+  <!-- ---- SERVICES HERO ---- -->
+  <section class="svc-hero" id="svc-hero">
+
+    <!-- -- Blurred gradient backdrop circles -- -->
+    <div class="svc-hero-bg">
+      <div class="svc-bg-circle svc-bg-c1"></div>
+      <div class="svc-bg-circle svc-bg-c2"></div>
+      <div class="svc-bg-circle svc-bg-c3"></div>
+    </div>
+
+    <!-- -- Floating decorative elements -- -->
+    <div class="svc-deco-wrap" aria-hidden="true">
+      <!-- organic -->
+      <span class="svc-deco sd-1"  style="--sd-x:6%;  --sd-y:14%; --sd-s:1.1; --sd-r:-18deg; --sd-d:0s"><i class="fas fa-leaf" style="color:#2ecc71;font-size:0.75rem;margin-right:4px;"></i></span>
+      <span class="svc-deco sd-2"  style="--sd-x:90%; --sd-y:8%;  --sd-s:0.9; --sd-r:12deg;  --sd-d:1.2s"><i class="fas fa-leaf" style="color:#2ecc71;font-size:1.25rem;"></i></span>
+      <span class="svc-deco sd-3"  style="--sd-x:78%; --sd-y:62%; --sd-s:0.8; --sd-r:-8deg;  --sd-d:2.1s"><i class="fas fa-leaf" style="color:#2ecc71;font-size:0.75rem;margin-right:4px;"></i></span>
+      <span class="svc-deco sd-4"  style="--sd-x:18%; --sd-y:70%; --sd-s:1.0; --sd-r:20deg;  --sd-d:0.7s"><i class="fas fa-seedling" style="color:#2ecc71;font-size:1.25rem;"></i></span>
+      <span class="svc-deco sd-5"  style="--sd-x:55%; --sd-y:5%;  --sd-s:0.75;--sd-r:-22deg; --sd-d:1.8s"><i class="fas fa-leaf" style="color:#2ecc71;font-size:1.25rem;"></i></span>
+      <!-- chili / lemon -->
+      <span class="svc-deco sd-6"  style="--sd-x:3%;  --sd-y:48%; --sd-s:1.05;--sd-r:14deg;  --sd-d:2.4s"><i class="fas fa-pepper-hot" style="color:#e74c3c;font-size:1.25rem;"></i></span>
+      <span class="svc-deco sd-7"  style="--sd-x:85%; --sd-y:35%; --sd-s:0.9; --sd-r:-10deg; --sd-d:0.4s"><i class="fas fa-lemon" style="color:var(--gold);font-size:1.25rem;"></i></span>
+      <span class="svc-deco sd-8"  style="--sd-x:42%; --sd-y:80%; --sd-s:1.15;--sd-r:6deg;   --sd-d:3.0s"><i class="fas fa-pepper-hot" style="color:#e74c3c;font-size:1.25rem;"></i></span>
+      <span class="svc-deco sd-9"  style="--sd-x:68%; --sd-y:18%; --sd-s:0.8; --sd-r:-14deg; --sd-d:1.5s"><i class="fas fa-lemon" style="color:var(--gold);font-size:1.25rem;"></i></span>
+      <!-- utensils / chef -->
+      <span class="svc-deco sd-10" style="--sd-x:12%; --sd-y:30%; --sd-s:1.0; --sd-r:30deg;  --sd-d:0.9s"><i class="fas fa-utensils" style="color:var(--gold);font-size:1.25rem;"></i></span>
+      <span class="svc-deco sd-11" style="--sd-x:93%; --sd-y:55%; --sd-s:0.85;--sd-r:-25deg; --sd-d:2.7s"><i class="fas fa-utensils" style="color:var(--gold);font-size:1.25rem;"></i></span>
+      <span class="svc-deco sd-12" style="--sd-x:30%; --sd-y:88%; --sd-s:1.1; --sd-r:5deg;   --sd-d:1.1s"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i></span>
+      <span class="svc-deco sd-13" style="--sd-x:72%; --sd-y:82%; --sd-s:0.9; --sd-r:-12deg; --sd-d:3.3s"><i class="fas fa-utensils" style="color:var(--gold);font-size:1.25rem;"></i></span>
+      <!-- sparkles / abstract -->
+      <span class="svc-deco sd-14" style="--sd-x:48%; --sd-y:50%; --sd-s:1.3; --sd-r:0deg;   --sd-d:4.0s"><i class="fas fa-star" style="color:var(--gold);font-size:0.85rem;margin-right:4px;"></i></span>
+      <span class="svc-deco sd-15" style="--sd-x:22%; --sd-y:10%; --sd-s:0.7; --sd-r:18deg;  --sd-d:0.3s"><i class="fas fa-star" style="color:var(--gold);font-size:0.85rem;margin-right:4px;"></i></span>
+      <span class="svc-deco sd-16" style="--sd-x:60%; --sd-y:92%; --sd-s:0.85;--sd-r:-6deg;  --sd-d:2.0s"><i class="fas fa-star" style="color:var(--gold);font-size:0.85rem;margin-right:4px;"></i></span>
+      <span class="svc-deco sd-17" style="--sd-x:8%;  --sd-y:82%; --sd-s:0.75;--sd-r:22deg;  --sd-d:1.6s"><i class="fas fa-star" style="color:var(--gold);font-size:0.85rem;margin-right:4px;"></i></span>
+      <span class="svc-deco sd-18" style="--sd-x:82%; --sd-y:90%; --sd-s:1.0; --sd-r:-18deg; --sd-d:3.6s"><i class="fas fa-star" style="color:var(--gold);font-size:0.85rem;margin-right:4px;"></i></span>
+    </div>
+
+    <!-- -- Hero text -- -->
+    <div class="container svc-hero-inner">
+      <div class="svc-hero-content">
+        <div class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb-sep">�</span>
+          <span>Services</span>
+        </div>
+
+        <div class="svc-hero-badge">
+          <span class="svc-badge-dot"></span>
+          Premium Catering Excellence
+        </div>
+
+        <h1 class="svc-hero-title">
+          Premium Catering<br>
+          <span class="svc-title-highlight">Services</span>
+        </h1>
+
+        <p class="svc-hero-sub">
+          From intimate dinners to grand celebrations � we craft extraordinary dining experiences tailored to every occasion, culture and dream.
+        </p>
+
+        <div class="svc-hero-cta">
+          <a href="404.html" class="btn btn-gold">
+            <i class="fas fa-calendar-check"></i> Book Your Event
+          </a>
+          <a href="404.html" class="btn btn-outline svc-scroll-btn">
+            <i class="fas fa-arrow-down"></i> Explore Services
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- -- Animated Statistics -- -->
+    <div class="svc-stats-wrap">
+      <div class="container">
+        <div class="svc-stats-grid">
+
+          <div class="svc-stat-card reveal">
+            <div class="svc-stat-icon"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i></div>
+            <div class="svc-stat-body">
+              <div class="svc-stat-number">
+                <span class="counter" data-target="1500">0</span>
+                <span class="svc-stat-plus">+</span>
+              </div>
+              <div class="svc-stat-label">Events Catered</div>
+            </div>
+          </div>
+
+          <div class="svc-stat-card reveal stagger-1">
+            <div class="svc-stat-icon"><i class="fas fa-utensils" style="color:var(--gold);font-size:1.4rem;"></i></div>
+            <div class="svc-stat-body">
+              <div class="svc-stat-number">
+                <span class="counter" data-target="50">0</span>
+                <span class="svc-stat-plus">+</span>
+              </div>
+              <div class="svc-stat-label">Master Chefs</div>
+            </div>
+          </div>
+
+          <div class="svc-stat-card reveal stagger-2">
+            <div class="svc-stat-icon"><i class="fas fa-bowl-food" style="color:var(--gold);font-size:1.4rem;"></i></div>
+            <div class="svc-stat-body">
+              <div class="svc-stat-number">
+                <span class="counter" data-target="200">0</span>
+                <span class="svc-stat-plus">+</span>
+              </div>
+              <div class="svc-stat-label">Signature Dishes</div>
+            </div>
+          </div>
+
+          <div class="svc-stat-card reveal stagger-3">
+            <div class="svc-stat-icon"><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i></div>
+            <div class="svc-stat-body">
+              <div class="svc-stat-number">
+                <span class="counter" data-target="4.9" data-decimals="1">4.9</span>
+                <span class="svc-stat-plus">/5</span>
+              </div>
+              <div class="svc-stat-label">Customer Rating</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <!-- -- anchor for scroll btn -- -->
+  <div id="services-list"></div>
+
+  <!-- Services Detailed List -->
+  <section class="section">
+    <div class="container">
+      <div class="services-list">
+
+        <!-- Wedding Catering -->
+        <div class="service-row wedding-highlight-row reveal" id="wedding-catering">
+          <div class="service-row-img">
+            <img src="assets/images/wedding-catering.webp" alt="Wedding Catering" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-gold">Most Popular</span>
+            <h2>Wedding <em style="color:var(--gold);font-family:var(--font-heading)">Catering</em></h2>
+            <p>Your wedding day deserves nothing less than perfection. Our wedding catering team specialises in creating bespoke menus that reflect your culture, preferences and love story. From mehendi breakfasts to lavish reception dinners.</p>
+            <div class="service-features">
+              <div class="service-feature">Customised multi-course menus</div>
+              <div class="service-feature">Dedicated wedding catering coordinator</div>
+              <div class="service-feature">Live food stations &amp; carving tables</div>
+              <div class="service-feature">Complete setup and décor assistance</div>
+              <div class="service-feature">Trained serving staff in formal attire</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>800 / person</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Wedding Catering</a>
+          </div>
+        </div>
+
+        <!-- Corporate Catering -->
+        <div class="service-row reverse reveal" id="corporate-catering">
+          <div class="service-row-img">
+            <img src="assets/images/corporate-catering.webp" alt="Corporate Catering" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-dark">Professional</span>
+            <h2>Corporate <em style="color:var(--gold);font-family:var(--font-heading)">Events</em></h2>
+            <p>Impress your clients, energise your team and make your corporate events memorable with our professional catering services. We handle everything from working lunch boxes to grand gala dinners.</p>
+            <div class="service-features">
+              <div class="service-feature">Board meetings &amp; conferences</div>
+              <div class="service-feature">Product launches &amp; galas</div>
+              <div class="service-feature">Team lunch &amp; office parties</div>
+              <div class="service-feature">Annual day celebrations</div>
+              <div class="service-feature">International cuisine options</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>400 / person</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Corporate Catering</a>
+          </div>
+        </div>
+
+        <!-- Birthday -->
+        <div class="service-row reveal" id="birthday-parties">
+          <div class="service-row-img">
+            <img src="assets/images/birthday-catering.webp" alt="Birthday Catering" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-gold">Personalised</span>
+            <h2>Birthday <em style="color:var(--gold);font-family:var(--font-heading)">Celebrations</em></h2>
+            <p>Make every birthday a moment to cherish. From kids' birthday parties with fun stations to milestone adult celebrations with gourmet menus � we make every year count.</p>
+            <div class="service-features">
+              <div class="service-feature">Themed food stations</div>
+              <div class="service-feature">Custom cakes &amp; desserts</div>
+              <div class="service-feature">Kid-friendly &amp; gourmet menus</div>
+              <div class="service-feature">Live chaat &amp; candy counters</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>350 / person</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Birthday Catering</a>
+          </div>
+        </div>
+
+        <!-- Outdoor -->
+        <div class="service-row reverse reveal" id="outdoor-catering">
+          <div class="service-row-img">
+            <img src="assets/images/outdoor-catering.webp" alt="Outdoor Catering" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-dark">Open Air</span>
+            <h2>Outdoor <em style="color:var(--gold);font-family:var(--font-heading)">Events</em></h2>
+            <p>Gardens, terraces, beaches or farmhouses � our outdoor catering team is fully equipped to deliver a premium experience in any environment, regardless of scale or setting.</p>
+            <div class="service-features">
+              <div class="service-feature">Full outdoor kitchen setup</div>
+              <div class="service-feature">BBQ &amp; live grill stations</div>
+              <div class="service-feature">Weather-ready equipment</div>
+              <div class="service-feature">Portable bar &amp; beverage service</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>500 / person</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Outdoor Catering</a>
+          </div>
+        </div>
+
+        <!-- Buffet -->
+        <div class="service-row reveal" id="buffet-catering">
+          <div class="service-row-img">
+            <img src="assets/images/buffet-catering.webp" alt="Buffet Catering" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-gold">Grand Spread</span>
+            <h2>Grand <em style="color:var(--gold);font-family:var(--font-heading)">Buffet</em></h2>
+            <p>Our multi-cuisine buffet packages are designed to delight every palate. From Indian regional favourites to Continental, Chinese and Mediterranean � we create buffets that become the highlight of any event.</p>
+            <div class="service-features">
+              <div class="service-feature">Multi-cuisine spreads</div>
+              <div class="service-feature">Live carving &amp; action stations</div>
+              <div class="service-feature">Vegetarian &amp; non-veg spreads</div>
+              <div class="service-feature">Dessert buffet with 30+ items</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>650 / person</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Buffet Catering</a>
+          </div>
+        </div>
+
+        <!-- Live Counters -->
+        <div class="service-row reverse reveal" id="live-food-stations">
+          <div class="service-row-img">
+            <img src="assets/images/buffet-catering.webp" alt="Live Food Counters" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-dark">Interactive</span>
+            <h2>Live Food <em style="color:var(--gold);font-family:var(--font-heading)">Counters</em></h2>
+            <p>Elevate your event with interactive live cooking stations. Watch our chefs prepare fresh dishes right in front of your guests � an experience that combines entertainment with extraordinary food.</p>
+            <div class="service-features">
+              <div class="service-feature">Pani Puri &amp; Chaat counters</div>
+              <div class="service-feature">Pasta &amp; noodle live stations</div>
+              <div class="service-feature">Teppanyaki &amp; grill counter</div>
+              <div class="service-feature">Fresh juice &amp; dessert bars</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>150 / counter</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Live Counters</a>
+          </div>
+        </div>
+
+        <!-- Housewarming Events -->
+        <div class="service-row reveal" id="housewarming-events">
+          <div class="service-row-img">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&q=80" alt="Housewarming Catering" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-gold">Warm Welcome</span>
+            <h2>Housewarming <em style="color:var(--gold);font-family:var(--font-heading)">Catering</em></h2>
+            <p>Welcome your family and friends into your new home with warm hospitality and delicious food. We specialise in handling compact domestic catering setups, traditional vegetarian breakfasts, and grand celebration lunches.</p>
+            <div class="service-features">
+              <div class="service-feature">Traditional pure-vegetarian options</div>
+              <div class="service-feature">Compact home setup and service design</div>
+              <div class="service-feature">Authentic regional breakfast spreads</div>
+              <div class="service-feature">Auspicious festival and ceremony menus</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>350 / person</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Housewarming Catering</a>
+          </div>
+        </div>
+
+        <!-- Private Dining -->
+        <div class="service-row reverse reveal" id="private-dining">
+          <div class="service-row-img">
+            <img src="assets/images/buffet-catering.webp" alt="Private Dining" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-dark">Luxury Service</span>
+            <h2>Private <em style="color:var(--gold);font-family:var(--font-heading)">Dining</em></h2>
+            <p>Treat your guests to a Michelin-star fine-dining restaurant experience in the intimacy of your own residence. Our chef plans a bespoke tasting menu crafted exclusively for you, paired with custom tablescapes and premium plating.</p>
+            <div class="service-features">
+              <div class="service-feature">Personal executive chef table setup</div>
+              <div class="service-feature">Multi-course gourmet fusion menus</div>
+              <div class="service-feature">Bespoke table formatting and glassware</div>
+              <div class="service-feature">Sommelier and dedicated butler service</div>
+            </div>
+            <p class="service-price">Starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>1,200 / person</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Private Dining</a>
+          </div>
+        </div>
+
+        <!-- Event Planning -->
+        <div class="service-row reveal" id="event-planning">
+          <div class="service-row-img">
+            <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=700&q=80" alt="Event Planning" loading="lazy" />
+          </div>
+          <div class="service-row-body">
+            <span class="badge badge-gold">End-To-End</span>
+            <h2>Event <em style="color:var(--gold);font-family:var(--font-heading)">Planning</em></h2>
+            <p>Let us manage the details while you enjoy the celebration. From coordinate seating arrangements and custom theme styling to custom stage designs, floral arrangements, lights, and audio setups.</p>
+            <div class="service-features">
+              <div class="service-feature">Venue layout planning and floral styles</div>
+              <div class="service-feature">Audio, staging, and lighting integration</div>
+              <div class="service-feature">Full photography and entertainment booking</div>
+              <div class="service-feature">Host coordination and timeline manager</div>
+            </div>
+            <p class="service-price">Packages starting from <strong><span style="color:var(--gold);font-weight:bold;">₹</span>15,000</strong></p>
+            <a href="404.html" class="btn btn-gold" style="margin-top:16px;"><i class="fas fa-calendar-check"></i> Book Event Planning</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label reveal">Pricing</div>
+        <h2 class="section-title reveal stagger-1">Choose Your <span>Package</span></h2>
+        <p class="section-subtitle reveal stagger-2" style="color:rgba(255,255,255,.6)">Transparent pricing � no hidden charges, ever</p>
+      </div>
+      <div class="packages-grid">
+        <div class="package-card reveal stagger-1">
+          <div class="package-header">
+            <div class="package-name">Essential</div>
+            <div class="package-price"><span style="color:var(--gold);font-weight:bold;">₹</span>350<small>/person</small></div>
+          </div>
+          <div class="package-body">
+            <div class="package-features">
+              <div class="package-feature">2 Starter varieties</div>
+              <div class="package-feature">3 Main course dishes</div>
+              <div class="package-feature">Bread &amp; rice</div>
+              <div class="package-feature">2 Dessert options</div>
+              <div class="package-feature">Basic serving staff</div>
+              <div class="package-feature">Chafing dishes included</div>
+            </div>
+            <a href="404.html" class="btn btn-outline" style="width:100%;justify-content:center;">Get Started</a>
+          </div>
+        </div>
+        <div class="package-card featured reveal stagger-2">
+          <div class="package-header">
+            <div class="package-name">Premium <i class="fas fa-crown" style="color:var(--gold);font-size:1.1rem;margin-right:4px;"></i></div>
+            <div class="package-price"><span style="color:var(--gold);font-weight:bold;">₹</span>650<small>/person</small></div>
+          </div>
+          <div class="package-body">
+            <div class="package-features">
+              <div class="package-feature">5 Starter varieties</div>
+              <div class="package-feature">6 Main course dishes</div>
+              <div class="package-feature">Live bread counter</div>
+              <div class="package-feature">5 Dessert options</div>
+              <div class="package-feature">Uniformed serving staff</div>
+              <div class="package-feature">1 Live food station</div>
+              <div class="package-feature">Beverages included</div>
+            </div>
+            <a href="404.html" class="btn btn-gold" style="width:100%;justify-content:center;">Most Popular</a>
+          </div>
+        </div>
+        <div class="package-card reveal stagger-3">
+          <div class="package-header">
+            <div class="package-name">Luxury</div>
+            <div class="package-price"><span style="color:var(--gold);font-weight:bold;">₹</span>1200<small>/person</small></div>
+          </div>
+          <div class="package-body">
+            <div class="package-features">
+              <div class="package-feature">8+ Starter varieties</div>
+              <div class="package-feature">10+ Main course dishes</div>
+              <div class="package-feature">3 Live cooking stations</div>
+              <div class="package-feature">Full dessert spread</div>
+              <div class="package-feature">Premium serving team</div>
+              <div class="package-feature">Full bar setup</div>
+              <div class="package-feature">Table decor included</div>
+            </div>
+            <a href="404.html" class="btn btn-outline" style="width:100%;justify-content:center;">Go Luxury</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Table Wrap -->
+      <div class="comparison-table-wrap reveal">
+        <div class="table-responsive">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Essential</th>
+                <th>Premium</th>
+                <th>Luxury</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Serving Staff</td><td>Basic</td><td>Uniformed</td><td>Premium</td></tr>
+              <tr><td>Live Counters</td><td><span class="check-no"><i class="fas fa-times" style="color:#e74c3c;"></i></span></td><td>1 Counter</td><td>3+ Counters</td></tr>
+              <tr><td>Beverages</td><td><span class="check-addon">Add-on</span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td><td><span class="check-yes">Full Bar</span></td></tr>
+              <tr><td>Table Décor</td><td><span class="check-no"><i class="fas fa-times" style="color:#e74c3c;"></i></span></td><td><span class="check-addon">Add-on</span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td></tr>
+              <tr><td>Dedicated Coordinator</td><td><span class="check-no"><i class="fas fa-times" style="color:#e74c3c;"></i></span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td></tr>
+              <tr><td>Food Tasting</td><td><span class="check-no"><i class="fas fa-times" style="color:#e74c3c;"></i></span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td></tr>
+              <tr><td>Cleanup Service</td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td><td><span class="check-yes"><i class="fas fa-check" style="color:#2ecc71;"></i></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2 class="cta-title reveal">Let's Plan Your <span>Perfect Event</span></h2>
+      <p class="cta-subtitle reveal stagger-1">Get a custom quote tailored to your event needs within 24 hours.</p>
+      <div class="cta-btns">
+        <a href="404.html" class="btn btn-gold reveal stagger-2"><i class="fas fa-calendar-check"></i> Get Custom Quote</a>
+        <a href="404.html" class="btn btn-white reveal stagger-3"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i> Browse Menu</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+    <div class="footer-waves">
+      <div class="footer-wave"></div>
+      <div class="footer-wave"></div>
+    </div>
+    <div class="container">
+      <div class="footer-main">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo" style="cursor: none;"><img src="assets/images/redlogo.webp" alt="Company Logo" style="height: 40px; width: auto;" /></a>
+          <p>Crafting extraordinary dining experiences for over two decades. From weddings to corporate events, we deliver food that tells your story.</p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="footer-social-btn" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="footer-social-btn" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="footer-social-btn" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="footer-social-btn" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+          <div style="margin-top:24px;display:flex;align-items:center;gap:10px;">
+            <span style="color:var(--gold);font-size:1.1rem;"><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i><i class="fas fa-star" style="color:var(--gold);margin-right:2px;"></i></span>
+            <span style="font-size:.82rem;color:rgba(255,255,255,.5);">4.9 on Google (680+ reviews)</span>
+          </div>
+        </div>
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </div>
+        <!-- Services -->
+        <div class="footer-col">
+          <h4>Services</h4>
+          <div class="footer-links">
+            <a href="404.html">Wedding Catering</a>
+            <a href="404.html">Corporate Events</a>
+            <a href="404.html">Birthday Parties</a>
+            <a href="404.html">Outdoor Catering</a>
+            <a href="404.html">Buffet Setup</a>
+            <a href="404.html">Live Counters</a>
+          </div>
+        </div>
+        <!-- Contact + Hours -->
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="footer-links" style="gap:16px;">
+            <a href="tel:+917488099999" style="gap:8px;"><i class="fas fa-phone" style="color:var(--gold);width:16px;"></i> +91 74880 99999</a>
+            <a href="mailto:info@stackly.com" style="gap:8px;"><i class="fas fa-envelope" style="color:var(--gold);width:16px;"></i> info@stackly.com</a>
+            <a href="https://maps.google.com/?q=MMR+Complex,+Salem+-+636+003,+Tamil+Nadu,+India" target="_blank" style="gap:8px;align-items:flex-start;"><i class="fas fa-map-marker-alt" style="color:var(--gold);width:16px;margin-top:3px;"></i> MMR Complex, Salem - 636 003, Tamil Nadu, India</a>
+          </div>
+          <div style="margin-top:20px;font-size:.82rem;color:rgba(255,255,255,.4);">
+            <div style="color:var(--gold);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Business Hours</div>
+            <div>Mon�Sat: 9:00 AM � 9:00 PM</div>
+            <div>Sun: 10:00 AM � 6:00 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-gold-border"></div>
+    <div class="container">
+      <div class="footer-bottom">
+        <div class="footer-bottom-left">© 2025 Stackly Premium Catering. All rights reserved. Crafted with <i class="fas fa-heart" style="color:var(--crimson);margin:0 2px;"></i></div>
+        <div class="footer-bottom-right">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div class="float-btns">
+    <a href="https://wa.me/917488099999" class="float-btn float-wa"><i class="fab fa-whatsapp"></i></a>
+    <a href="tel:+917488099999" class="float-btn float-call"><i class="fas fa-phone"></i></a>
+    <button class="float-btn float-top"><i class="fas fa-chevron-up"></i></button>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

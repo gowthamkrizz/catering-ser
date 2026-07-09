@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found � Stackly Premium Catering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/main.css?v=5.4" />
+  <style>
+    .error-container {
+      min-height: 100vh;
+      padding: 140px 0 100px;
+      background: var(--dark);
+      position: relative;
+      overflow: hidden;
+    }
+    .error-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .error-circle-top {
+      position: absolute;
+      width: 800px; height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200, 54, 42, 0.08) 0%, transparent 65%);
+      top: -300px; left: 50%;
+      transform: translateX(-50%);
+      animation: driftSlow 15s ease-in-out infinite alternate;
+    }
+    .error-circle-bottom {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200, 155, 60, 0.05) 0%, transparent 65%);
+      bottom: -200px; left: 10%;
+      animation: driftMed 20s ease-in-out infinite alternate;
+    }
+    @keyframes driftSlow {
+      0% { transform: translateX(-50%) translateY(0); }
+      100% { transform: translateX(-45%) translateY(30px); }
+    }
+    @keyframes driftMed {
+      0% { transform: translateY(0) translateX(0); }
+      100% { transform: translateY(-40px) translateX(20px); }
+    }
+    .error-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .error-hero {
+      text-align: center;
+      max-width: 650px;
+      margin-bottom: 80px;
+    }
+    .error-code {
+      font-family: var(--font-heading);
+      font-size: clamp(7rem, 16vw, 11rem);
+      font-weight: 700;
+      color: var(--crimson);
+      line-height: 1;
+      margin-bottom: 24px;
+      letter-spacing: -3px;
+      animation: pulseCode 3s ease-in-out infinite alternate;
+    }
+    @keyframes pulseCode {
+      0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(200, 54, 42, 0.1)); }
+      100% { transform: scale(1.03); filter: drop-shadow(0 0 35px rgba(200, 54, 42, 0.3)); }
+    }
+    .error-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--text);
+      margin-bottom: 20px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .error-title span {
+      color: var(--gold);
+      font-style: italic;
+    }
+    .error-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    .error-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* -- Helpful Kitchen Links (Sitemap) -- */
+    .error-section-title {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 32px;
+      position: relative;
+      display: inline-block;
+    }
+    .error-section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; left: 50%;
+      transform: translateX(-50%);
+      width: 50px; height: 1.5px;
+      background: var(--gold);
+    }
+    .sitemap-wrap {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-card);
+      margin-bottom: 80px;
+    }
+    .sitemap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .sitemap-col h3 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sitemap-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sitemap-col a {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sitemap-col a:hover {
+      color: var(--crimson);
+      transform: translateX(4px);
+    }
+    .sitemap-col a i {
+      font-size: 0.7rem;
+      opacity: 0.6;
+    }
+
+    /* -- Chef Recommendation Cards -- */
+    .chef-rec-wrap {
+      width: 100%;
+      margin-bottom: 80px;
+    }
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .rec-card {
+      background: var(--dark-2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.4s ease, border-color 0.4s ease;
+    }
+    .rec-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(200, 54, 42, 0.3);
+    }
+    .rec-img-wrap {
+      height: 180px;
+      overflow: hidden;
+      position: relative;
+    }
+    .rec-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .rec-card:hover .rec-img-wrap img {
+      transform: scale(1.08);
+    }
+    .rec-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: rgba(200, 155, 60, 0.9);
+      color: #0f0f0f;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .rec-body {
+      padding: 20px;
+      text-align: left;
+    }
+    .rec-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .rec-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+    .rec-link {
+      font-size: 0.78rem;
+      color: var(--crimson);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rec-link:hover i {
+      transform: translateX(3px);
+    }
+    .rec-link i {
+      font-size: 0.68rem;
+      transition: transform 0.2s ease;
+    }
+
+    /* -- Bottom Help Banner -- */
+    .help-banner {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(200, 54, 42, 0.08) 0%, rgba(200, 155, 60, 0.04) 100%);
+      border: 1px solid rgba(200, 155, 60, 0.15);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      backdrop-filter: blur(8px);
+    }
+    .help-left {
+      text-align: left;
+    }
+    .help-left h4 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .help-left p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+    .help-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-help {
+      padding: 10px 20px;
+      font-size: 0.78rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sitemap-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+      .rec-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .rec-card:last-child { display: none; }
+      .help-banner { flex-direction: column; text-align: center; }
+      .help-left { text-align: center; }
+    }
+    @media (max-width: 576px) {
+      .sitemap-grid { grid-template-columns: 1fr; gap: 24px; }
+      .rec-grid { grid-template-columns: 1fr; }
+      .rec-card:last-child { display: block; }
+      .sitemap-wrap { padding: 24px; }
+    }
+
+    /* Floating Background Culinary Items - Higher Opacity & Colors */
+    .floating-bg-item {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+      font-size: clamp(3rem, 10vw, 6rem);
+      filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+    }
+    .floating-bg-item.color-gold {
+      color: rgba(200, 155, 60, 0.12);
+    }
+    .floating-bg-item.color-crimson {
+      color: rgba(200, 54, 42, 0.14);
+    }
+    .float-item-1 { top: 15%; left: 10%; animation: floatSlow 8s ease-in-out infinite alternate; }
+    .float-item-2 { top: 20%; right: 12%; animation: floatMed 10s ease-in-out infinite alternate; }
+    .float-item-3 { bottom: 20%; left: 15%; animation: floatSlow 12s ease-in-out infinite alternate; }
+    .float-item-4 { bottom: 15%; right: 18%; animation: floatFast 6s ease-in-out infinite alternate; }
+    .float-item-5 { top: 45%; left: 8%; animation: floatMed 9s ease-in-out infinite alternate; }
+    .float-item-6 { top: 55%; right: 7%; animation: floatSlow 11s ease-in-out infinite alternate; }
+    .float-item-7 { top: 10%; left: 40%; animation: floatFast 7s ease-in-out infinite alternate; }
+
+    @keyframes floatSlow {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-25px) rotate(15deg); }
+    }
+    @keyframes floatMed {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-40px) rotate(-20deg); }
+    }
+    @keyframes floatFast {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-15px) rotate(10deg); }
+    }
+
+    /* Moving Service Bell above 404 text */
+    .error-icon-wrap {
+      font-size: clamp(3.5rem, 8vw, 5rem);
+      color: var(--gold);
+      margin-bottom: 5px;
+      animation: ringBell 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px rgba(200, 155, 60, 0.35));
+      display: inline-block;
+    }
+    @keyframes ringBell {
+      0%, 100% { transform: rotate(0) scale(1); }
+      12% { transform: rotate(-15deg) scale(1.08); }
+      24% { transform: rotate(12deg) scale(1.08); }
+      36% { transform: rotate(-10deg) scale(1.04); }
+      48% { transform: rotate(8deg) scale(1.04); }
+      60% { transform: rotate(0) scale(1.1); }
+    }
+  </style>
+</head>
+<body class="loading">
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-logo"><img src="assets/images/redlogo.webp" alt="Company Logo" style="height: 60px; width: auto;" /></div>
+    <div class="loader-line"></div>
+    <div class="loader-text">Loading...</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  </div>
+
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <div class="error-container">
+    <div class="error-bg">
+      <div class="error-circle-top"></div>
+      <div class="error-circle-bottom"></div>
+    </div>
+    
+    <!-- Floating Background Items -->
+    <div class="floating-bg-item color-gold float-item-1"><i class="fas fa-utensils"></i></div>
+    <div class="floating-bg-item color-crimson float-item-2"><i class="fas fa-pizza-slice"></i></div>
+    <div class="floating-bg-item color-gold float-item-3"><i class="fas fa-wine-glass-alt"></i></div>
+    <div class="floating-bg-item color-crimson float-item-4"><i class="fas fa-cookie-bite"></i></div>
+    <div class="floating-bg-item color-gold float-item-5"><i class="fas fa-concierge-bell"></i></div>
+    <div class="floating-bg-item color-crimson float-item-6"><i class="fas fa-cocktail"></i></div>
+    <div class="floating-bg-item color-gold float-item-7"><i class="fas fa-ice-cream"></i></div>
+    
+    <div class="error-inner">
+      
+      <!-- -- Error Hero -- -->
+      <div class="error-hero">
+        <div class="error-icon-wrap">
+          <i class="fas fa-concierge-bell"></i>
+        </div>
+        <div class="error-code">404</div>
+        <h1 class="error-title">Taste of the <span>Unknown</span></h1>
+        <p class="error-desc">
+          The page you are looking for has departed from the menu, but our culinary journeys continue. Let us guide you back to our main courses.
+        </p>
+        <div class="error-actions">
+          <a href="index.html" class="btn btn-gold"><i class="fas fa-home"></i> Back to Home</a>
+          <a href="#" onclick="history.back(); return false;" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Previous Page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

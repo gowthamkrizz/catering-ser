@@ -1,0 +1,1373 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard &bull; Stackly Premium Catering</title>
+  <meta name="description" content="Stackly admin panel for managing bookings, customers and menu." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/main.css?v=5.4" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { cursor: none; overflow-x: hidden; }
+
+    /* ---- ROOT LAYOUT ---- */
+    .adash-root { display:flex; min-height:100vh; background:#080808; font-family:var(--font-body); max-width:100%; overflow-x:hidden; }
+
+    /* ---- ADMIN SIDEBAR ---- */
+    .adash-sidebar {
+      width: 260px;
+      min-height: 100vh;
+      background: #0e0e0e;
+      border-right: 1px solid rgba(200,54,42,0.12);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top:0; left:0; bottom:0;
+      z-index: 200;
+      transition: transform 0.4s cubic-bezier(0.76,0,0.24,1);
+    }
+    .adash-sidebar::before {
+      content:'';
+      position:absolute;
+      top:0; left:0; right:0;
+      height:2px;
+      background: linear-gradient(90deg,var(--crimson-dark),var(--crimson),var(--gold));
+    }
+    .asbr-logo {
+      padding: 24px 24px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-close {
+      display: none;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 1.25rem;
+      cursor: none;
+      transition: color 0.2s;
+    }
+    .sidebar-close:hover {
+      color: var(--crimson);
+    }
+    .asbr-logo a {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .asbr-logo .logo-dot { width:6px;height:6px;background:var(--crimson);border-radius:50%;animation:pulse 2s infinite; }
+    .asbr-logo .admin-badge {
+      font-size: 0.58rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(200,54,42,0.15);
+      border: 1px solid rgba(200,54,42,0.3);
+      color: var(--crimson);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 2px;
+    }
+
+    /* Admin profile strip */
+    .asbr-profile {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .asbr-avatar {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #9E2820, var(--crimson));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: 600;
+      border: 2px solid rgba(200,54,42,0.35);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .asbr-avatar::after {
+      content:'';
+      position:absolute;
+      bottom:1px;right:1px;
+      width:9px;height:9px;
+      background:#2ecc71;
+      border-radius:50%;
+      border:2px solid #0e0e0e;
+    }
+    .asbr-profile-info .asbr-name { font-size:0.85rem;font-weight:600;color:#fff; }
+    .asbr-profile-info .asbr-role { font-size:0.68rem;color:var(--crimson);letter-spacing:1px;text-transform:uppercase;margin-top:2px; }
+
+    /* Nav */
+    .asbr-nav { flex:1; padding:12px 0; overflow-y:auto; }
+    .asbr-nav::-webkit-scrollbar{width:3px;}
+    .asbr-nav::-webkit-scrollbar-thumb{background:rgba(200,54,42,0.2);}
+    .asbr-section-label {
+      font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;
+      color:var(--text-light);padding:14px 24px 6px;font-weight:600;
+    }
+    .asbr-link {
+      display:flex;align-items:center;gap:12px;
+      padding:11px 24px;
+      color:rgba(240,235,225,0.5);
+      text-decoration:none;
+      font-size:0.83rem;font-weight:500;
+      letter-spacing:0.2px;
+      transition:all 0.22s ease;
+      cursor:none;
+      border-left:2px solid transparent;
+      position:relative;
+    }
+    .asbr-link:hover,.asbr-link.active {
+      color:#fff;
+      border-left-color:var(--crimson);
+      background:rgba(200,54,42,0.07);
+    }
+    .asbr-link .a-icon {
+      width:32px;height:32px;
+      border-radius:7px;
+      background:rgba(255,255,255,0.03);
+      display:flex;align-items:center;justify-content:center;
+      font-size:0.85rem;flex-shrink:0;
+      transition:background 0.22s;
+    }
+    .asbr-link.active .a-icon,.asbr-link:hover .a-icon { background:rgba(200,54,42,0.18);color:var(--crimson); }
+    .asbr-link .a-badge {
+      margin-left:auto;
+      background:var(--crimson);color:#fff;
+      font-size:0.6rem;font-weight:700;
+      padding:2px 6px;border-radius:8px;
+    }
+
+    .asbr-footer {
+      padding:18px 24px;
+      border-top:1px solid rgba(255,255,255,0.04);
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .asbr-logout {
+      display:flex;align-items:center;gap:10px;
+      color:rgba(240,235,225,0.4);font-size:0.82rem;
+      cursor:none;transition:color 0.22s;
+      text-decoration:none;
+    }
+    .asbr-logout:hover{color:var(--crimson);}
+
+    /* ---- MAIN AREA ---- */
+    .adash-main { margin-left:260px; flex:1; display:flex; flex-direction:column; min-height:100vh; min-width:0; }
+
+    /* Topbar */
+    .adash-topbar {
+      position:sticky;top:0;z-index:100;
+      background:rgba(8,8,8,0.94);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      padding:0 36px;height:66px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .atb-left { display:flex;align-items:center;gap:16px; }
+    .atb-toggle {
+      display:none;width:36px;height:36px;border-radius:8px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+      color:var(--text);font-size:0.9rem;
+      align-items:center;justify-content:center;cursor:none;transition:all 0.2s;
+    }
+    .atb-toggle:hover{background:var(--crimson);border-color:var(--crimson);}
+    .atb-breadcrumb {
+      display:flex;align-items:center;gap:8px;
+      font-size:0.78rem;color:var(--text-muted);
+    }
+    .atb-breadcrumb strong { color:#fff;font-weight:600; }
+    .atb-right { display:flex;align-items:center;gap:10px; }
+    .atb-btn {
+      width:38px;height:38px;border-radius:9px;
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+      color:var(--text-muted);font-size:0.9rem;
+      display:flex;align-items:center;justify-content:center;
+      cursor:none;transition:all 0.22s;position:relative;
+    }
+    .atb-btn:hover{background:rgba(200,54,42,0.12);border-color:var(--crimson);color:var(--crimson);}
+    .atb-btn .nb-dot {
+      position:absolute;top:6px;right:6px;
+      width:6px;height:6px;background:var(--crimson);
+      border-radius:50%;border:1.5px solid #080808;animation:pulse 2s infinite;
+    }
+    .atb-admin-chip {
+      display:flex;align-items:center;gap:8px;
+      padding:6px 12px;border-radius:8px;
+      background:rgba(200,54,42,0.1);
+      border:1px solid rgba(200,54,42,0.2);
+      font-size:0.78rem;color:var(--crimson);font-weight:600;
+      cursor:none;
+    }
+
+    /* Search bar */
+    .atb-search {
+      display:flex;align-items:center;gap:10px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:8px;padding:0 14px;height:38px;
+      transition:border-color 0.2s;
+    }
+    .atb-search:focus-within{border-color:rgba(200,54,42,0.3);}
+    .atb-search i{color:var(--text-light);font-size:0.8rem;}
+    .atb-search input{
+      background:none;border:none;outline:none;
+      color:var(--text);font-size:0.83rem;font-family:var(--font-body);
+      width:180px;
+    }
+    .atb-search input::placeholder{color:var(--text-light);}
+
+    /* ---- CONTENT ---- */
+    .adash-content { padding:36px; flex:1; }
+    .adash-section { display:none; }
+    .adash-section.active { display:block; }
+
+    /* Section heading */
+    .asec-head {
+      display:flex;align-items:flex-start;justify-content:space-between;
+      margin-bottom:28px;flex-wrap:wrap;gap:12px;
+    }
+    .asec-head h2 {
+      font-family:var(--font-heading);font-size:1.7rem;color:#fff;font-weight:600;
+    }
+    .asec-head p { color:var(--text-muted);font-size:0.82rem;margin-top:3px; }
+
+    /* ---- KPI GRID ---- */
+    .akpi-grid {
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:18px;margin-bottom:28px;
+    }
+    .akpi-card {
+      background:#121212;
+      border:1px solid rgba(255,255,255,0.05);
+      border-radius:12px;padding:22px;
+      position:relative;overflow:hidden;
+      transition:all 0.32s ease;
+      animation:fadeInUp 0.5s ease both;
+    }
+    .akpi-card:hover{transform:translateY(-4px);border-color:rgba(200,54,42,0.22);box-shadow:0 10px 36px rgba(0,0,0,0.45);}
+    .akpi-card::after {
+      content:'';
+      position:absolute;bottom:0;left:0;right:0;
+      height:2px;
+      background:linear-gradient(90deg,transparent,var(--akpi-color,var(--crimson)),transparent);
+      transform:scaleX(0);transition:transform 0.35s;
+    }
+    .akpi-card:hover::after{transform:scaleX(1);}
+    .akpi-card.c-gold{--akpi-color:var(--gold);}
+    .akpi-card.c-green{--akpi-color:#2ecc71;}
+    .akpi-card.c-blue{--akpi-color:#3498db;}
+    .akpi-card:nth-child(1){animation-delay:0.05s;}
+    .akpi-card:nth-child(2){animation-delay:0.15s;}
+    .akpi-card:nth-child(3){animation-delay:0.25s;}
+    .akpi-card:nth-child(4){animation-delay:0.35s;}
+    .akpi-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .akpi-icon {
+      width:40px;height:40px;border-radius:10px;
+      background:rgba(200,54,42,0.1);color:var(--crimson);
+      display:flex;align-items:center;justify-content:center;font-size:1rem;
+      transition:transform 0.3s;
+    }
+    .akpi-card.c-gold .akpi-icon{background:rgba(200,155,60,0.1);color:var(--gold);}
+    .akpi-card.c-green .akpi-icon{background:rgba(46,204,113,0.1);color:#2ecc71;}
+    .akpi-card.c-blue .akpi-icon{background:rgba(52,152,219,0.1);color:#3498db;}
+    .akpi-card:hover .akpi-icon{transform:scale(1.12);}
+    .akpi-change{font-size:0.72rem;font-weight:600;padding:3px 7px;border-radius:5px;}
+    .akpi-change.up{background:rgba(46,204,113,0.1);color:#2ecc71;}
+    .akpi-change.down{background:rgba(231,76,60,0.1);color:#e74c3c;}
+    .akpi-num{
+      font-family:var(--font-heading);font-size:2.1rem;font-weight:600;
+      color:#fff;line-height:1;margin-bottom:4px;
+    }
+    .akpi-label{font-size:0.73rem;color:var(--text-muted);letter-spacing:0.3px;}
+    .akpi-sub{
+      font-size:0.7rem;color:var(--text-light);
+      margin-top:12px;padding-top:12px;
+      border-top:1px solid rgba(255,255,255,0.04);
+    }
+
+    /* ---- CHART AREA ---- */
+    .achart-card {
+      background:#121212;border:1px solid rgba(255,255,255,0.05);
+      border-radius:12px;overflow:hidden;
+      animation:fadeInUp 0.5s ease 0.2s both;margin-bottom:24px;
+    }
+    .achart-head {
+      padding:18px 24px;border-bottom:1px solid rgba(255,255,255,0.04);
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    }
+    .achart-head h3{font-family:var(--font-heading);font-size:1.05rem;font-weight:600;color:#fff;}
+    .chart-legend { display:flex;gap:18px;flex-wrap:wrap; }
+    .chart-leg-item { display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--text-muted); }
+    .chart-leg-dot { width:8px;height:8px;border-radius:2px;flex-shrink:0; }
+
+    /* Bar chart */
+    .bar-chart {
+      padding:24px 24px 8px;
+      display:flex;align-items:flex-end;gap:12px;
+      height:220px;
+      position:relative;
+    }
+    .bar-chart::before {
+      content:'';
+      position:absolute;top:24px;left:24px;right:24px;bottom:40px;
+      background: repeating-linear-gradient(to top,rgba(255,255,255,0.03) 0px,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 25%);
+    }
+    .bar-group {
+      flex:1;
+      display:flex;flex-direction:column;align-items:center;
+      gap:6px;height:100%;justify-content:flex-end;
+    }
+    .bar-wrap {
+      flex:1;width:100%;
+      display:flex;align-items:flex-end;gap:3px;
+    }
+    .bar {
+      flex:1;border-radius:4px 4px 0 0;
+      transition:height 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
+      position:relative;height:0;
+      cursor:none;
+    }
+    .bar.revenue { background: linear-gradient(to top,var(--crimson-dark),var(--crimson)); }
+    .bar.bookings { background: linear-gradient(to top,rgba(200,155,60,0.4),var(--gold)); }
+    .bar:hover { filter:brightness(1.2); }
+    .bar-tooltip {
+      position:absolute;bottom:calc(100% + 6px);left:50%;
+      transform:translateX(-50%);
+      background:#1a1a1a;border:1px solid rgba(200,54,42,0.2);
+      padding:5px 10px;border-radius:6px;
+      font-size:0.72rem;color:#fff;white-space:nowrap;
+      opacity:0;pointer-events:none;transition:opacity 0.2s;
+      z-index:10;
+    }
+    .bar:hover .bar-tooltip{opacity:1;}
+    .bar-month { font-size:0.65rem;color:var(--text-light);letter-spacing:0.5px;text-transform:uppercase; }
+
+    /* ---- DASHBOARD ROW ---- */
+    .adash-row { display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px; }
+    .adash-row.w32 { grid-template-columns:3fr 2fr; }
+    .adash-row.full { grid-template-columns:1fr; }
+
+    /* ---- ADMIN CARD ---- */
+    .acard {
+      background:#121212;border:1px solid rgba(255,255,255,0.05);
+      border-radius:12px;overflow:hidden;
+      animation:fadeInUp 0.5s ease both;
+    }
+    .acard-head {
+      padding:16px 22px;border-bottom:1px solid rgba(255,255,255,0.04);
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .acard-head h3{font-family:var(--font-heading);font-size:1rem;font-weight:600;color:#fff;}
+    .acard-action {
+      font-size:0.75rem;color:var(--crimson);cursor:none;
+      text-decoration:none;letter-spacing:0.3px;transition:color 0.2s;
+    }
+    .acard-action:hover{color:var(--crimson-light);}
+    .acard-body{padding:20px 22px;}
+
+    /* ---- ADMIN TABLE ---- */
+    .atable-wrap{overflow-x:auto;}
+    .atable{width:100%;border-collapse:collapse;}
+    .atable th{
+      padding:11px 16px;text-align:left;
+      font-size:0.68rem;font-weight:600;
+      letter-spacing:1.5px;text-transform:uppercase;
+      color:var(--text-light);
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      white-space:nowrap;
+      background:rgba(255,255,255,0.01);
+    }
+    .atable td{
+      padding:13px 16px;font-size:0.83rem;
+      color:var(--text-muted);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      vertical-align:middle;
+    }
+    .atable tr:last-child td{border-bottom:none;}
+    .atable tr:hover td{background:rgba(255,255,255,0.015);}
+    .atable .t-bold{color:var(--text);font-weight:500;}
+    .atable .t-amount{color:var(--gold);font-weight:600;font-family:var(--font-heading);}
+    .atable .t-id{color:var(--text-light);font-size:0.75rem;}
+
+    /* Status badges */
+    .sbadge{padding:3px 10px;border-radius:16px;font-size:0.68rem;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap;}
+    .sb-confirmed{background:rgba(46,204,113,0.1);color:#2ecc71;border:1px solid rgba(46,204,113,0.18);}
+    .sb-pending{background:rgba(200,155,60,0.1);color:var(--gold);border:1px solid rgba(200,155,60,0.18);}
+    .sb-completed{background:rgba(52,152,219,0.1);color:#3498db;border:1px solid rgba(52,152,219,0.18);}
+    .sb-cancelled{background:rgba(231,76,60,0.1);color:#e74c3c;border:1px solid rgba(231,76,60,0.18);}
+    .sb-admin{background:rgba(200,54,42,0.1);color:var(--crimson);border:1px solid rgba(200,54,42,0.2);}
+    .sb-user{background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid rgba(255,255,255,0.1);}
+
+    /* Action buttons */
+    .abtn{padding:5px 12px;border-radius:6px;font-size:0.73rem;font-weight:600;cursor:none;transition:all 0.2s;font-family:var(--font-body);border:none;}
+    .abtn-approve{background:rgba(46,204,113,0.1);color:#2ecc71;border:1px solid rgba(46,204,113,0.2);}
+    .abtn-approve:hover{background:#2ecc71;color:#fff;}
+    .abtn-cancel{background:rgba(231,76,60,0.08);color:#e74c3c;border:1px solid rgba(231,76,60,0.18);}
+    .abtn-cancel:hover{background:#e74c3c;color:#fff;}
+    .abtn-view{background:rgba(200,54,42,0.1);color:var(--crimson);border:1px solid rgba(200,54,42,0.2);}
+    .abtn-view:hover{background:var(--crimson);color:#fff;}
+    .abtn-edit{background:rgba(52,152,219,0.1);color:#3498db;border:1px solid rgba(52,152,219,0.18);}
+    .abtn-edit:hover{background:#3498db;color:#fff;}
+    .abtn-del{background:rgba(231,76,60,0.08);color:#e74c3c;border:1px solid rgba(231,76,60,0.18);}
+    .abtn-del:hover{background:#e74c3c;color:#fff;}
+    .abtn-add{background:var(--crimson);color:#fff;border:1px solid var(--crimson);}
+    .abtn-add:hover{background:var(--crimson-dark);}
+    .action-group{display:flex;gap:6px;flex-wrap:wrap;}
+
+    /* ---- DONUT CHART (CSS) ---- */
+    .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;}
+    .donut-svg{transform:rotate(-90deg);}
+    .donut-svg circle{fill:none;stroke-width:14;transition:stroke-dashoffset 1.2s cubic-bezier(0.25,0.46,0.45,0.94);}
+    .donut-center-text{
+      position:absolute;text-align:center;
+      font-family:var(--font-heading);font-size:1.5rem;color:#fff;font-weight:600;
+    }
+    .donut-legend{width:100%;display:flex;flex-direction:column;gap:10px;}
+    .donut-leg-item{display:flex;align-items:center;justify-content:space-between;}
+    .donut-leg-label{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);}
+    .donut-leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+    .donut-leg-val{font-size:0.8rem;color:#fff;font-weight:600;}
+
+    /* ---- QUICK ACTIONS ---- */
+    .qactions-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .qaction-card{
+      padding:16px;border-radius:10px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.05);
+      display:flex;align-items:center;gap:12px;
+      cursor:none;transition:all 0.25s;
+      text-decoration:none;
+    }
+    .qaction-card:hover{background:rgba(200,54,42,0.08);border-color:rgba(200,54,42,0.2);}
+    .qaction-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+    .qaction-info .qa-title{font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:2px;}
+    .qaction-info .qa-sub{font-size:0.7rem;color:var(--text-muted);}
+
+    /* ---- SEARCH BAR (table) ---- */
+    .table-search-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:16px;flex-wrap:wrap;gap:10px;
+    }
+    .tbl-search{
+      display:flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:8px;padding:0 12px;height:36px;
+    }
+    .tbl-search i{color:var(--text-light);font-size:0.78rem;}
+    .tbl-search input{
+      background:none;border:none;outline:none;
+      color:var(--text);font-size:0.82rem;font-family:var(--font-body);width:180px;
+    }
+    .tbl-search input::placeholder{color:var(--text-light);}
+    .tbl-filter-btns{display:flex;gap:6px;flex-wrap:wrap;}
+    .tbl-fbtn{
+      padding:6px 14px;border-radius:7px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.07);
+      color:var(--text-muted);font-size:0.75rem;font-weight:500;
+      cursor:none;transition:all 0.2s;font-family:var(--font-body);
+    }
+    .tbl-fbtn:hover,.tbl-fbtn.active{
+      background:rgba(200,54,42,0.1);border-color:rgba(200,54,42,0.28);color:var(--crimson);
+    }
+
+    /* ---- MENU MANAGEMENT ---- */
+    .menu-mgmt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+    .menu-mgmt-card{
+      background:#121212;border:1px solid rgba(255,255,255,0.05);
+      border-radius:10px;overflow:hidden;
+      transition:border-color 0.3s,transform 0.3s;
+    }
+    .menu-mgmt-card:hover{border-color:rgba(200,54,42,0.25);transform:translateY(-3px);}
+    .menu-mgmt-img{aspect-ratio:4/3;overflow:hidden;}
+    .menu-mgmt-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.8);transition:filter 0.3s;}
+    .menu-mgmt-card:hover .menu-mgmt-img img{filter:brightness(0.65);}
+    .menu-mgmt-info{padding:12px 14px;}
+    .menu-mgmt-name{font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:4px;}
+    .menu-mgmt-cat{font-size:0.7rem;color:var(--crimson);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+    .menu-mgmt-price{font-family:var(--font-heading);font-size:1rem;color:var(--gold);margin-bottom:10px;}
+    .menu-mgmt-actions{display:flex;gap:6px;}
+
+    /* ---- STAT MINI-CARDS ---- */
+    .stat-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .stat-mini{padding:14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);}
+    .stat-mini-num{font-family:var(--font-heading);font-size:1.4rem;color:#fff;font-weight:600;}
+    .stat-mini-label{font-size:0.68rem;color:var(--text-muted);letter-spacing:0.5px;margin-top:3px;}
+
+    /* ---- MODAL ---- */
+    .admin-modal-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,0.75);
+      z-index:1000;display:none;align-items:center;justify-content:center;
+      backdrop-filter:blur(4px);
+    }
+    .admin-modal-overlay.open{display:flex;}
+    .admin-modal{
+      background:#141414;border:1px solid rgba(200,54,42,0.2);
+      border-radius:16px;padding:32px;max-width:520px;width:90%;
+      position:relative;animation:scaleIn 0.3s ease;
+    }
+    @keyframes scaleIn{from{opacity:0;transform:scale(0.94);}to{opacity:1;transform:scale(1);}}
+    .modal-close{
+      position:absolute;top:16px;right:16px;
+      width:32px;height:32px;border-radius:8px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+      color:var(--text-muted);font-size:0.9rem;
+      display:flex;align-items:center;justify-content:center;cursor:none;transition:all 0.2s;
+    }
+    .modal-close:hover{background:var(--crimson);color:#fff;border-color:var(--crimson);}
+    .modal-title{font-family:var(--font-heading);font-size:1.4rem;color:#fff;font-weight:600;margin-bottom:20px;}
+    .modal-form{display:flex;flex-direction:column;gap:16px;}
+    .modal-field{display:flex;flex-direction:column;gap:6px;}
+    .modal-field label{font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);}
+    .modal-field input,.modal-field select,.modal-field textarea{
+      background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+      border-radius:7px;padding:10px 14px;color:var(--text);
+      font-family:var(--font-body);font-size:0.85rem;outline:none;
+      transition:border-color 0.25s,box-shadow 0.25s;width:100%;
+    }
+    .modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{
+      border-color:var(--crimson);box-shadow:0 0 0 3px rgba(200,54,42,0.1);
+    }
+    .modal-field textarea{resize:vertical;min-height:80px;}
+    .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px;flex-wrap:wrap;}
+
+    /* ---- TOAST ---- */
+    .admin-toast-container{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+    .admin-toast{
+      background:#181818;border:1px solid rgba(200,54,42,0.25);
+      border-radius:10px;padding:12px 18px;
+      display:flex;align-items:center;gap:10px;
+      min-width:260px;max-width:340px;
+      box-shadow:0 8px 28px rgba(0,0,0,0.5);
+      animation:slideInRight 0.35s ease;
+      color:var(--text);font-size:0.83rem;
+    }
+    @keyframes slideInRight{from{opacity:0;transform:translateX(28px);}to{opacity:1;transform:none;}}
+    .admin-toast i{font-size:0.95rem;}
+    .admin-toast.t-success{border-color:rgba(46,204,113,0.25);}
+    .admin-toast.t-success i{color:#2ecc71;}
+    .admin-toast.t-error{border-color:rgba(231,76,60,0.25);}
+    .admin-toast.t-error i{color:#e74c3c;}
+    .admin-toast i.fa-info-circle{color:var(--crimson);}
+
+    /* Sidebar overlay */
+    .asidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:199;}
+    .asidebar-overlay.show{display:block;}
+
+    /* ---- RESPONSIVE ---- */
+    @media(max-width:1200px){.akpi-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:1024px){
+      .adash-row.w32{grid-template-columns:1fr;}
+      .adash-row{grid-template-columns:1fr;}
+    }
+    @media(max-width:900px){
+      .adash-sidebar{transform:translateX(-100%);}
+      .adash-sidebar.open{transform:translateX(0);}
+      .adash-main{margin-left:0;}
+      .sidebar-close { display: block !important; }
+      .atb-toggle{display:flex;}
+      .atb-search{display:none;}
+    }
+    @media(max-width:700px){
+      .adash-content{padding:20px;}
+      .adash-topbar{padding:0 16px;}
+      .akpi-grid{grid-template-columns:1fr 1fr;gap:12px;}
+      .qactions-grid{grid-template-columns:1fr;}
+      .menu-mgmt-grid{grid-template-columns:repeat(2,1fr);}
+    }
+    @media(max-width:480px){
+      .akpi-grid{grid-template-columns:1fr;}
+      .modal-grid{grid-template-columns:1fr;}
+      .menu-mgmt-grid{grid-template-columns:1fr;}
+      .atb-admin-chip{display:none !important;}
+      .atb-breadcrumb span, .atb-breadcrumb i {display:none !important;}
+    }
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+  </style>
+</head>
+<body class="loading">
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="loader-logo"><img src="assets/images/redlogo.webp" alt="Company Logo" style="height: 60px; width: auto;" /></div>
+    <div class="loader-line"></div>
+    <div class="loader-text">Admin Panel</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  </div>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <!-- Overlay + Toasts -->
+  <div class="asidebar-overlay" id="aSidebarOverlay"></div>
+  <div class="admin-toast-container" id="adminToasts"></div>
+
+  <!-- --- BOOKING DETAIL MODAL --- -->
+  <div class="admin-modal-overlay" id="bookingModal">
+    <div class="admin-modal">
+      <button class="modal-close" onclick="closeModal('bookingModal')"><i class="fas fa-times" style="color:#e74c3c;"></i></button>
+      <div class="modal-title">Booking Details</div>
+      <div class="modal-form">
+        <div class="modal-grid">
+          <div class="modal-field"><label>Customer Name</label><input type="text" value="Priya Menon" /></div>
+          <div class="modal-field"><label>Event Type</label><input type="text" value="Wedding Reception" /></div>
+          <div class="modal-field"><label>Event Date</label><input type="date" value="2026-07-18" /></div>
+          <div class="modal-field"><label>Guest Count</label><input type="number" value="180" /></div>
+          <div class="modal-field"><label>Package</label>
+            <select><option>Premium</option><option>Classic</option><option>Business</option><option>Lite</option></select>
+          </div>
+          <div class="modal-field"><label>Amount</label><input type="text" value="&#8377;1,55,000" /></div>
+        </div>
+        <div class="modal-field"><label>Special Notes</label><textarea>Jain food for 40 guests. Outdoor setup at The Leela hotel garden.</textarea></div>
+        <div class="modal-field"><label>Status</label>
+          <select><option>Pending</option><option selected>Confirmed</option><option>Completed</option><option>Cancelled</option></select>
+        </div>
+        <div class="modal-actions">
+          <button class="abtn abtn-cancel" onclick="closeModal('bookingModal')">Close</button>
+          <button class="abtn abtn-approve" onclick="adminToast('Booking updated!','success');closeModal('bookingModal')">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- --- ADD MENU ITEM MODAL --- -->
+  <div class="admin-modal-overlay" id="menuModal">
+    <div class="admin-modal">
+      <button class="modal-close" onclick="closeModal('menuModal')"><i class="fas fa-times" style="color:#e74c3c;"></i></button>
+      <div class="modal-title">Add Menu Item</div>
+      <div class="modal-form">
+        <div class="modal-grid">
+          <div class="modal-field"><label>Dish Name</label><input type="text" placeholder="e.g. Butter Chicken" /></div>
+          <div class="modal-field"><label>Category</label>
+            <select><option>Starters</option><option>Main Course</option><option>Desserts</option><option>Beverages</option><option>Breads</option></select>
+          </div>
+          <div class="modal-field"><label>Price (per person)</label><input type="text" placeholder="? 0" /></div>
+          <div class="modal-field"><label>Type</label>
+            <select><option>Vegetarian</option><option>Non-Vegetarian</option><option>Vegan</option></select>
+          </div>
+        </div>
+        <div class="modal-field"><label>Description</label><textarea placeholder="Short description of the dish..."></textarea></div>
+        <div class="modal-field"><label>Status</label>
+          <select><option>Available</option><option>Seasonal</option><option>Unavailable</option></select>
+        </div>
+        <div class="modal-actions">
+          <button class="abtn abtn-cancel" onclick="closeModal('menuModal')">Cancel</button>
+          <button class="abtn abtn-add" onclick="adminToast('Menu item added!','success');closeModal('menuModal')">Add Item</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="adash-root">
+
+    <!-- ----------- SIDEBAR ----------- -->
+    <aside class="adash-sidebar" id="aDashSidebar">
+      <div class="asbr-logo">
+        <a href="index.html">
+          <img src="assets/images/redlogo.webp" alt="Stackly Logo" style="height: 38px; width: auto;" />
+          <i class="fas fa-user-shield" style="color: var(--crimson); font-size: 1.1rem; margin-left: 2px;"></i>
+        </a>
+        <span class="admin-badge">Admin</span>
+        <button class="sidebar-close" id="adminSidebarCloseBtn" title="Close menu"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="asbr-profile">
+        <div class="asbr-avatar" id="adminSidebarAvatar">A</div>
+        <div class="asbr-profile-info">
+          <div class="asbr-role" id="adminSidebarEmail" style="font-size:0.68rem;color:var(--text-muted);word-break:break-all;"></div>
+        </div>
+      </div>
+
+      <nav class="asbr-nav">
+        <div class="asbr-section-label">Analytics</div>
+        <a href="#" class="asbr-link active" data-section="overview" id="alink-overview">
+          <span class="a-icon"><i class="fas fa-chart-line"></i></span>Overview
+        </a>
+        <a href="#" class="asbr-link" data-section="revenue" id="alink-revenue">
+          <span class="a-icon"><span style="color:var(--gold);font-weight:bold;">&#8377;</span></span>Revenue
+        </a>
+
+        <div class="asbr-section-label">Management</div>
+        <a href="#" class="asbr-link" data-section="bookings" id="alink-bookings">
+          <span class="a-icon"><i class="fas fa-calendar-check"></i></span>Bookings
+          <span class="a-badge">8</span>
+        </a>
+        <a href="#" class="asbr-link" data-section="customers" id="alink-customers">
+          <span class="a-icon"><i class="fas fa-users"></i></span>Customers
+        </a>
+        <a href="#" class="asbr-link" data-section="menu" id="alink-menu">
+          <span class="a-icon"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i></span>Menu
+        </a>
+
+        <div class="asbr-section-label">System</div>
+        <a href="#" class="asbr-link" data-section="reports" id="alink-reports">
+          <span class="a-icon"><i class="fas fa-file-alt"></i></span>Reports
+        </a>
+        <a href="#" class="asbr-link" data-section="settings" id="alink-settings">
+          <span class="a-icon"><i class="fas fa-cog"></i></span>Settings
+        </a>
+      </nav>
+
+      <div class="asbr-footer">
+        <a href="#" class="asbr-logout" onclick="logoutSession(event)"><i class="fas fa-sign-out-alt"></i>Logout</a>
+      </div>
+    </aside>
+
+    <!-- ----------- MAIN ----------- -->
+    <div class="adash-main">
+
+      <!-- Topbar -->
+      <header class="adash-topbar">
+        <div class="atb-left">
+          <button class="atb-toggle" id="aSidebarToggle"><i class="fas fa-bars"></i></button>
+          <div class="atb-breadcrumb">
+            <span>Stackly</span>
+            <i class="fas fa-chevron-right" style="font-size:0.6rem;color:var(--text-light);"></i>
+            <strong id="aTopbarTitle">Overview</strong>
+          </div>
+        </div>
+        <div class="atb-left" style="flex:1;justify-content:center;max-width:300px;">
+          <div class="atb-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search bookings, customers&bull;" />
+          </div>
+        </div>
+        <div class="atb-right">
+          <button class="atb-btn" title="Notifications" onclick="adminToast('4 new notifications','info')">
+            <i class="fas fa-bell"></i>
+            <span class="nb-dot"></span>
+          </button>
+          <div class="atb-btn" title="Catering Service"><i class="fas fa-concierge-bell" style="color: var(--crimson);"></i></div>
+          <div class="atb-admin-chip" id="adminTopChip"><i class="fas fa-shield-alt"></i> Admin</div>
+        </div>
+      </header>
+
+      <main class="adash-content">
+
+        <!-- -- OVERVIEW -- -->
+        <section class="adash-section active" id="asec-overview">
+          <div class="asec-head">
+            <div>
+              <h2>Dashboard Overview</h2>
+              <p>Welcome back, <span id="adminWelcomeName">Rajan</span>. Here's what's happening today — July 7, 2026</p>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="abtn abtn-view" onclick="adminToast('Report generated!','success')"><i class="fas fa-download"></i> Export Report</button>
+              <button class="abtn abtn-add" onclick="showAdminSection('bookings')"><i class="fas fa-plus"></i> New Booking</button>
+            </div>
+          </div>
+
+          <!-- KPI -->
+          <div class="akpi-grid">
+            <div class="akpi-card">
+              <div class="akpi-row">
+                <div class="akpi-icon"><span style="color:var(--gold);font-weight:bold;">&#8377;</span></div>
+                <span class="akpi-change up">+18%</span>
+              </div>
+              <div class="akpi-num">?<span class="aCounter" data-target="842000" data-pfx="?" data-sep="true">0</span></div>
+              <div class="akpi-label">Total Revenue (Jul)</div>
+              <div class="akpi-sub">vs &#8377;7,12,000 last month</div>
+            </div>
+            <div class="akpi-card c-gold">
+              <div class="akpi-row">
+                <div class="akpi-icon"><i class="fas fa-calendar-check"></i></div>
+                <span class="akpi-change up">+5</span>
+              </div>
+              <div class="akpi-num"><span class="aCounter" data-target="42">0</span></div>
+              <div class="akpi-label">Active Bookings</div>
+              <div class="akpi-sub">8 pending approval</div>
+            </div>
+            <div class="akpi-card c-green">
+              <div class="akpi-row">
+                <div class="akpi-icon"><i class="fas fa-users"></i></div>
+                <span class="akpi-change up">+12</span>
+              </div>
+              <div class="akpi-num"><span class="aCounter" data-target="284">0</span></div>
+              <div class="akpi-label">Total Customers</div>
+              <div class="akpi-sub">12 joined this month</div>
+            </div>
+            <div class="akpi-card c-blue">
+              <div class="akpi-row">
+                <div class="akpi-icon"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i></div>
+                <span class="akpi-change up">+3</span>
+              </div>
+              <div class="akpi-num"><span class="aCounter" data-target="68">0</span></div>
+              <div class="akpi-label">Menu Items</div>
+              <div class="akpi-sub">3 added this week</div>
+            </div>
+          </div>
+
+          <!-- Bar chart + Donut -->
+          <div class="adash-row w32" style="margin-bottom:24px;">
+            <div class="achart-card" style="margin-bottom:0;">
+              <div class="achart-head">
+                <h3>Monthly Revenue</h3>
+                <div class="chart-legend">
+                  <div class="chart-leg-item"><div class="chart-leg-dot" style="background:var(--crimson);"></div>Revenue</div>
+                  <div class="chart-leg-item"><div class="chart-leg-dot" style="background:var(--gold);"></div>Bookings</div>
+                </div>
+              </div>
+              <div class="bar-chart" id="revenueChart"></div>
+            </div>
+
+            <div class="acard" style="margin-bottom:0;">
+              <div class="acard-head"><h3>Booking Status</h3></div>
+              <div class="acard-body">
+                <div class="donut-wrap">
+                  <div style="position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center;">
+                    <svg class="donut-svg" width="140" height="140" viewBox="0 0 140 140" id="donutSvg">
+                      <defs>
+                        <linearGradient id="dg1" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#2ecc71"/>
+                        </linearGradient>
+                      </defs>
+                      <circle cx="70" cy="70" r="56" stroke="#1a1a1a" stroke-width="14"/>
+                      <circle id="donut-confirmed" cx="70" cy="70" r="56" stroke="#2ecc71" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
+                      <circle id="donut-pending" cx="70" cy="70" r="56" stroke="#C89B3C" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
+                      <circle id="donut-completed" cx="70" cy="70" r="56" stroke="#3498db" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
+                      <circle id="donut-cancelled" cx="70" cy="70" r="56" stroke="#e74c3c" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
+                    </svg>
+                    <div class="donut-center-text" style="position:absolute;text-align:center;">
+                      <div style="font-family:var(--font-heading);font-size:1.5rem;color:#fff;font-weight:600;line-height:1;">42</div>
+                      <div style="font-size:0.65rem;color:var(--text-muted);margin-top:2px;">Total</div>
+                    </div>
+                  </div>
+                  <div class="donut-legend">
+                    <div class="donut-leg-item"><div class="donut-leg-label"><div class="donut-leg-dot" style="background:#2ecc71;"></div>Confirmed</div><div class="donut-leg-val">20</div></div>
+                    <div class="donut-leg-item"><div class="donut-leg-label"><div class="donut-leg-dot" style="background:var(--gold);"></div>Pending</div><div class="donut-leg-val">8</div></div>
+                    <div class="donut-leg-item"><div class="donut-leg-label"><div class="donut-leg-dot" style="background:#3498db;"></div>Completed</div><div class="donut-leg-val">11</div></div>
+                    <div class="donut-leg-item"><div class="donut-leg-label"><div class="donut-leg-dot" style="background:#e74c3c;"></div>Cancelled</div><div class="donut-leg-val">3</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Bookings + Quick Actions -->
+          <div class="adash-row w32">
+            <div class="acard">
+              <div class="acard-head">
+                <h3>Recent Bookings</h3>
+                <a href="#" class="acard-action" onclick="showAdminSection('bookings');return false;">View All ?</a>
+              </div>
+              <div class="atable-wrap">
+                <table class="atable">
+                  <thead>
+                    <tr><th>Customer</th><th>Event</th><th>Date</th><th>Amount</th><th>Status</th><th>Action</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="t-bold">Priya Menon</td><td>Wedding</td><td>18 Jul</td><td class="t-amount">&#8377;1,55,000</td><td><span class="sbadge sb-confirmed">Confirmed</span></td><td><div class="action-group"><button class="abtn abtn-view" onclick="openModal('bookingModal')">View</button></div></td></tr>
+                    <tr><td class="t-bold">Rahul Kapoor</td><td>Corporate</td><td>22 Jul</td><td class="t-amount">&#8377;48,000</td><td><span class="sbadge sb-pending">Pending</span></td><td><div class="action-group"><button class="abtn abtn-approve" onclick="adminToast('Booking approved!','success')">Approve</button></div></td></tr>
+                    <tr><td class="t-bold">Sneha Joshi</td><td>Birthday</td><td>25 Jul</td><td class="t-amount">&#8377;62,000</td><td><span class="sbadge sb-pending">Pending</span></td><td><div class="action-group"><button class="abtn abtn-approve" onclick="adminToast('Booking approved!','success')">Approve</button></div></td></tr>
+                    <tr><td class="t-bold">Dev Patel</td><td>Anniversary</td><td>02 Aug</td><td class="t-amount">&#8377;35,000</td><td><span class="sbadge sb-confirmed">Confirmed</span></td><td><div class="action-group"><button class="abtn abtn-view" onclick="openModal('bookingModal')">View</button></div></td></tr>
+                    <tr><td class="t-bold">Anjali Singh</td><td>Festival</td><td>10 Aug</td><td class="t-amount">&#8377;92,000</td><td><span class="sbadge sb-completed">Completed</span></td><td><div class="action-group"><button class="abtn abtn-view" onclick="openModal('bookingModal')">View</button></div></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:20px;">
+              <div class="acard">
+                <div class="acard-head"><h3>Quick Actions</h3></div>
+                <div class="acard-body" style="padding:16px;">
+                  <div class="qactions-grid">
+                    <a href="#" class="qaction-card" onclick="openModal('bookingModal');return false;">
+                      <div class="qaction-icon" style="background:rgba(200,54,42,0.12);color:var(--crimson);"><i class="fas fa-plus"></i></div>
+                      <div class="qaction-info"><div class="qa-title">New Booking</div><div class="qa-sub">Add event</div></div>
+                    </a>
+                    <a href="#" class="qaction-card" onclick="openModal('menuModal');return false;">
+                      <div class="qaction-icon" style="background:rgba(200,155,60,0.12);color:var(--gold);"><i class="fas fa-utensils" style="color:var(--gold);margin-right:4px;"></i></div>
+                      <div class="qaction-info"><div class="qa-title">Add Dish</div><div class="qa-sub">Menu item</div></div>
+                    </a>
+                    <a href="#" class="qaction-card" onclick="adminToast('Report exported!','success');return false;">
+                      <div class="qaction-icon" style="background:rgba(52,152,219,0.12);color:#3498db;"><i class="fas fa-file-export"></i></div>
+                      <div class="qaction-info"><div class="qa-title">Export</div><div class="qa-sub">CSV/PDF</div></div>
+                    </a>
+                    <a href="#" class="qaction-card" onclick="showAdminSection('customers');return false;">
+                      <div class="qaction-icon" style="background:rgba(46,204,113,0.12);color:#2ecc71;"><i class="fas fa-user-plus"></i></div>
+                      <div class="qaction-info"><div class="qa-title">Customers</div><div class="qa-sub">Manage</div></div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="acard">
+                <div class="acard-head"><h3>Today at a Glance</h3></div>
+                <div class="acard-body">
+                  <div class="stat-mini-grid">
+                    <div class="stat-mini"><div class="stat-mini-num" style="color:var(--crimson);">3</div><div class="stat-mini-label">Events Today</div></div>
+                    <div class="stat-mini"><div class="stat-mini-num" style="color:var(--gold);">8</div><div class="stat-mini-label">Pending Review</div></div>
+                    <div class="stat-mini"><div class="stat-mini-num" style="color:#2ecc71;">&#8377;2.4L</div><div class="stat-mini-label">Today's Revenue</div></div>
+                    <div class="stat-mini"><div class="stat-mini-num" style="color:#3498db;">430</div><div class="stat-mini-label">Guests Served</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- REVENUE SECTION -- -->
+        <section class="adash-section" id="asec-revenue">
+          <div class="asec-head">
+            <div><h2>Revenue Analytics</h2><p>Detailed financial performance overview</p></div>
+            <button class="abtn abtn-view" onclick="adminToast('Report exported!','success')"><i class="fas fa-download"></i> Export</button>
+          </div>
+          <div class="akpi-grid">
+            <div class="akpi-card"><div class="akpi-row"><div class="akpi-icon"><span style="color:var(--gold);font-weight:bold;">&#8377;</span></div><span class="akpi-change up">+18%</span></div><div class="akpi-num">&#8377;84.2L</div><div class="akpi-label">This Month</div></div>
+            <div class="akpi-card c-gold"><div class="akpi-row"><div class="akpi-icon"><i class="fas fa-chart-line"></i></div><span class="akpi-change up">+12%</span></div><div class="akpi-num">&#8377;6.2Cr</div><div class="akpi-label">Year to Date</div></div>
+            <div class="akpi-card c-green"><div class="akpi-row"><div class="akpi-icon"><i class="fas fa-percent"></i></div><span class="akpi-change up">+3%</span></div><div class="akpi-num">34%</div><div class="akpi-label">Profit Margin</div></div>
+            <div class="akpi-card c-blue"><div class="akpi-row"><div class="akpi-icon"><i class="fas fa-receipt"></i></div><span class="akpi-change up">? 8%</span></div><div class="akpi-num">&#8377;1.98L</div><div class="akpi-label">Avg Order Value</div></div>
+          </div>
+          <div class="achart-card">
+            <div class="achart-head"><h3>Revenue Trend &bull; 2026</h3><div class="chart-legend"><div class="chart-leg-item"><div class="chart-leg-dot" style="background:var(--crimson);"></div>Revenue</div><div class="chart-leg-item"><div class="chart-leg-dot" style="background:var(--gold);"></div>Bookings</div></div></div>
+            <div class="bar-chart" id="revenueChart2"></div>
+          </div>
+        </section>
+
+        <!-- -- BOOKINGS SECTION -- -->
+        <section class="adash-section" id="asec-bookings">
+          <div class="asec-head">
+            <div><h2>Manage Bookings</h2><p>Review, approve and manage all catering event bookings</p></div>
+            <button class="abtn abtn-add" onclick="openModal('bookingModal')"><i class="fas fa-plus"></i> New Booking</button>
+          </div>
+
+          <div class="table-search-bar">
+            <div class="tbl-search">
+              <i class="fas fa-search"></i>
+              <input type="text" placeholder="Search by customer or event&bull;" oninput="filterAdminBookings(this.value)" />
+            </div>
+            <div class="tbl-filter-btns">
+              <button class="tbl-fbtn active" onclick="filterAdminByStatus(this,'all')">All (15)</button>
+              <button class="tbl-fbtn" onclick="filterAdminByStatus(this,'pending')">Pending (8)</button>
+              <button class="tbl-fbtn" onclick="filterAdminByStatus(this,'confirmed')">Confirmed (20)</button>
+              <button class="tbl-fbtn" onclick="filterAdminByStatus(this,'completed')">Completed (11)</button>
+              <button class="tbl-fbtn" onclick="filterAdminByStatus(this,'cancelled')">Cancelled (3)</button>
+            </div>
+          </div>
+
+          <div class="acard">
+            <div class="atable-wrap">
+              <table class="atable" id="adminBookingsTable">
+                <thead>
+                  <tr><th>ID</th><th>Customer</th><th>Event</th><th>Date</th><th>Guests</th><th>Package</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                  <tr data-customer="Priya Menon" data-status="confirmed"><td class="t-id">#BK001</td><td class="t-bold">Priya Menon</td><td>Wedding Reception</td><td>18 Jul</td><td>180</td><td>Premium</td><td class="t-amount">&#8377;1,55,000</td><td><span class="sbadge sb-confirmed">Confirmed</span></td><td><div class="action-group"><button class="abtn abtn-view" onclick="openModal('bookingModal')">View</button><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button></div></td></tr>
+                  <tr data-customer="Rahul Kapoor" data-status="pending"><td class="t-id">#BK002</td><td class="t-bold">Rahul Kapoor</td><td>Corporate Dinner</td><td>22 Jul</td><td>60</td><td>Business</td><td class="t-amount">&#8377;48,000</td><td><span class="sbadge sb-pending">Pending</span></td><td><div class="action-group"><button class="abtn abtn-approve" onclick="adminToast('Approved!','success')">Approve</button><button class="abtn abtn-cancel" onclick="adminToast('Cancelled','error')">Cancel</button></div></td></tr>
+                  <tr data-customer="Sneha Joshi" data-status="pending"><td class="t-id">#BK003</td><td class="t-bold">Sneha Joshi</td><td>Birthday Party</td><td>25 Jul</td><td>80</td><td>Classic</td><td class="t-amount">&#8377;62,000</td><td><span class="sbadge sb-pending">Pending</span></td><td><div class="action-group"><button class="abtn abtn-approve" onclick="adminToast('Approved!','success')">Approve</button><button class="abtn abtn-cancel" onclick="adminToast('Cancelled','error')">Cancel</button></div></td></tr>
+                  <tr data-customer="Dev Patel" data-status="confirmed"><td class="t-id">#BK004</td><td class="t-bold">Dev Patel</td><td>Anniversary</td><td>02 Aug</td><td>40</td><td>Classic</td><td class="t-amount">&#8377;35,000</td><td><span class="sbadge sb-confirmed">Confirmed</span></td><td><div class="action-group"><button class="abtn abtn-view" onclick="openModal('bookingModal')">View</button><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button></div></td></tr>
+                  <tr data-customer="Anjali Singh" data-status="completed"><td class="t-id">#BK005</td><td class="t-bold">Anjali Singh</td><td>Festival Dinner</td><td>10 Jun</td><td>150</td><td>Premium</td><td class="t-amount">&#8377;92,000</td><td><span class="sbadge sb-completed">Completed</span></td><td><div class="action-group"><button class="abtn abtn-view" onclick="openModal('bookingModal')">View</button></div></td></tr>
+                  <tr data-customer="Mohan Das" data-status="pending"><td class="t-id">#BK006</td><td class="t-bold">Mohan Das</td><td>House Party</td><td>15 Aug</td><td>30</td><td>Lite</td><td class="t-amount">&#8377;18,000</td><td><span class="sbadge sb-pending">Pending</span></td><td><div class="action-group"><button class="abtn abtn-approve" onclick="adminToast('Approved!','success')">Approve</button><button class="abtn abtn-cancel" onclick="adminToast('Cancelled','error')">Cancel</button></div></td></tr>
+                  <tr data-customer="Kavya Reddy" data-status="cancelled"><td class="t-id">#BK007</td><td class="t-bold">Kavya Reddy</td><td>Office Lunch</td><td>30 May</td><td>50</td><td>Business</td><td class="t-amount">&#8377;28,000</td><td><span class="sbadge sb-cancelled">Cancelled</span></td><td><div class="action-group"><button class="abtn abtn-view" onclick="adminToast('Details opened','info')">View</button></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- CUSTOMERS SECTION -- -->
+        <section class="adash-section" id="asec-customers">
+          <div class="asec-head">
+            <div><h2>Customer Management</h2><p>View and manage all registered customers</p></div>
+            <button class="abtn abtn-add" onclick="adminToast('Invite sent!','success')"><i class="fas fa-user-plus"></i> Add Customer</button>
+          </div>
+          <div class="table-search-bar">
+            <div class="tbl-search"><i class="fas fa-search"></i><input type="text" placeholder="Search customers&bull;" /></div>
+            <div class="tbl-filter-btns">
+              <button class="tbl-fbtn active" onclick="setActive(this)">All</button>
+              <button class="tbl-fbtn" onclick="setActive(this)">Gold</button>
+              <button class="tbl-fbtn" onclick="setActive(this)">Platinum</button>
+              <button class="tbl-fbtn" onclick="setActive(this)">Bronze</button>
+            </div>
+          </div>
+          <div class="acard">
+            <div class="atable-wrap">
+              <table class="atable">
+                <thead><tr><th>Customer</th><th>Email</th><th>Phone</th><th>Tier</th><th>Total Events</th><th>Total Spent</th><th>Joined</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--crimson-dark),var(--crimson));display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.9rem;color:#fff;">P</div><span class="t-bold">Priya Menon</span></div></td><td>priya@email.com</td><td>98765 43210</td><td><span class="sbadge" style="background:rgba(200,155,60,0.1);color:var(--gold);border:1px solid rgba(200,155,60,0.2);"><i class="fas fa-medal" style="color:var(--gold);"></i> Gold</span></td><td>8</td><td class="t-amount">&#8377;3,85,000</td><td>Jan 2024</td><td><div class="action-group"><button class="abtn abtn-view" onclick="adminToast('Profile opened','info')">View</button><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button></div></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1a6b8a,#3498db);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.9rem;color:#fff;">R</div><span class="t-bold">Rahul Kapoor</span></div></td><td>rahul@corp.com</td><td>91234 56789</td><td><span class="sbadge" style="background:rgba(176,196,222,0.1);color:#b0c4de;border:1px solid rgba(176,196,222,0.2);"><i class="fas fa-crown" style="color:#b0c4de;"></i> Platinum</span></td><td>15</td><td class="t-amount">&#8377;8,20,000</td><td>Mar 2023</td><td><div class="action-group"><button class="abtn abtn-view" onclick="adminToast('Profile opened','info')">View</button><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button></div></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#5a2d82,#9b59b6);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.9rem;color:#fff;">S</div><span class="t-bold">Sneha Joshi</span></div></td><td>sneha.j@gmail.com</td><td>87654 32109</td><td><span class="sbadge" style="background:rgba(200,155,60,0.1);color:var(--gold);border:1px solid rgba(200,155,60,0.2);"><i class="fas fa-medal" style="color:var(--gold);"></i> Gold</span></td><td>5</td><td class="t-amount">&#8377;1,92,000</td><td>Jun 2024</td><td><div class="action-group"><button class="abtn abtn-view" onclick="adminToast('Profile opened','info')">View</button><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button></div></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1a4a2a,#2ecc71);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.9rem;color:#fff;">D</div><span class="t-bold">Dev Patel</span></div></td><td>dev.patel@biz.in</td><td>99001 23456</td><td><span class="sbadge" style="background:rgba(205,127,50,0.1);color:#cd7f32;border:1px solid rgba(205,127,50,0.2);"><i class="fas fa-award" style="color:#cd7f32;"></i> Bronze</span></td><td>2</td><td class="t-amount">&#8377;62,000</td><td>Oct 2025</td><td><div class="action-group"><button class="abtn abtn-view" onclick="adminToast('Profile opened','info')">View</button><button class="abtn abtn-del" onclick="adminToast('Account suspended','error')">Suspend</button></div></td></tr>
+                  <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#7a2020,#e74c3c);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:0.9rem;color:#fff;">A</div><span class="t-bold">Anjali Singh</span></div></td><td>anjali@events.co</td><td>77001 88899</td><td><span class="sbadge" style="background:rgba(176,196,222,0.1);color:#b0c4de;border:1px solid rgba(176,196,222,0.2);"><i class="fas fa-crown" style="color:#b0c4de;"></i> Platinum</span></td><td>22</td><td class="t-amount">&#8377;12,50,000</td><td>Feb 2022</td><td><div class="action-group"><button class="abtn abtn-view" onclick="adminToast('Profile opened','info')">View</button><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- MENU SECTION -- -->
+        <section class="adash-section" id="asec-menu">
+          <div class="asec-head">
+            <div><h2>Menu Management</h2><p>Add, edit and manage all catering menu items</p></div>
+            <button class="abtn abtn-add" onclick="openModal('menuModal')"><i class="fas fa-plus"></i> Add Item</button>
+          </div>
+          <div class="table-search-bar">
+            <div class="tbl-search"><i class="fas fa-search"></i><input type="text" placeholder="Search menu items&bull;" /></div>
+            <div class="tbl-filter-btns">
+              <button class="tbl-fbtn active" onclick="setActive(this)">All</button>
+              <button class="tbl-fbtn" onclick="setActive(this)">Starters</button>
+              <button class="tbl-fbtn" onclick="setActive(this)">Main Course</button>
+              <button class="tbl-fbtn" onclick="setActive(this)">Desserts</button>
+              <button class="tbl-fbtn" onclick="setActive(this)">Beverages</button>
+            </div>
+          </div>
+          <div class="menu-mgmt-grid">
+            <div class="menu-mgmt-card"><div class="menu-mgmt-img"><img src="assets/images/dish-main.webp" alt="Butter Chicken"/></div><div class="menu-mgmt-info"><div class="menu-mgmt-name">Butter Chicken</div><div class="menu-mgmt-cat">Main Course &bull; Non-Veg</div><div class="menu-mgmt-price">&#8377;280/person</div><div class="menu-mgmt-actions"><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button><button class="abtn abtn-del" onclick="adminToast('Item removed','error')">Delete</button></div></div></div>
+            <div class="menu-mgmt-card"><div class="menu-mgmt-img"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80" alt="Paneer Tikka"/></div><div class="menu-mgmt-info"><div class="menu-mgmt-name">Paneer Tikka</div><div class="menu-mgmt-cat">Starters &bull; Vegetarian</div><div class="menu-mgmt-price">&#8377;220/person</div><div class="menu-mgmt-actions"><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button><button class="abtn abtn-del" onclick="adminToast('Item removed','error')">Delete</button></div></div></div>
+            <div class="menu-mgmt-card"><div class="menu-mgmt-img"><img src="assets/images/dish-starters.webp" alt="Biryani"/></div><div class="menu-mgmt-info"><div class="menu-mgmt-name">Hyderabadi Biryani</div><div class="menu-mgmt-cat">Main Course &bull; Non-Veg</div><div class="menu-mgmt-price">&#8377;320/person</div><div class="menu-mgmt-actions"><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button><button class="abtn abtn-del" onclick="adminToast('Item removed','error')">Delete</button></div></div></div>
+            <div class="menu-mgmt-card"><div class="menu-mgmt-img"><img src="assets/images/south-indian-food.webp" alt="Dal Makhani"/></div><div class="menu-mgmt-info"><div class="menu-mgmt-name">Dal Makhani</div><div class="menu-mgmt-cat">Main Course &bull; Vegan</div><div class="menu-mgmt-price">&#8377;180/person</div><div class="menu-mgmt-actions"><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button><button class="abtn abtn-del" onclick="adminToast('Item removed','error')">Delete</button></div></div></div>
+            <div class="menu-mgmt-card"><div class="menu-mgmt-img"><img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80" alt="Gulab Jamun"/></div><div class="menu-mgmt-info"><div class="menu-mgmt-name">Gulab Jamun</div><div class="menu-mgmt-cat">Desserts &bull; Vegetarian</div><div class="menu-mgmt-price">&#8377;90/person</div><div class="menu-mgmt-actions"><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button><button class="abtn abtn-del" onclick="adminToast('Item removed','error')">Delete</button></div></div></div>
+            <div class="menu-mgmt-card"><div class="menu-mgmt-img"><img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=400&q=80" alt="Tandoori"/></div><div class="menu-mgmt-info"><div class="menu-mgmt-name">Tandoori Chicken</div><div class="menu-mgmt-cat">Starters &bull; Non-Veg</div><div class="menu-mgmt-price">&#8377;260/person</div><div class="menu-mgmt-actions"><button class="abtn abtn-edit" onclick="adminToast('Edit mode','info')">Edit</button><button class="abtn abtn-del" onclick="adminToast('Item removed','error')">Delete</button></div></div></div>
+          </div>
+        </section>
+
+        <!-- -- REPORTS SECTION -- -->
+        <section class="adash-section" id="asec-reports">
+          <div class="asec-head"><div><h2>Reports</h2><p>Download and view business performance reports</p></div></div>
+          <div class="adash-row">
+            <div class="acard">
+              <div class="acard-head"><h3>Available Reports</h3></div>
+              <div class="acard-body">
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);">
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;border-radius:8px;background:rgba(200,54,42,0.1);color:var(--crimson);display:flex;align-items:center;justify-content:center;"><i class="fas fa-file-pdf"></i></div><div><div style="font-size:0.85rem;font-weight:500;color:var(--text);">Monthly Revenue Report</div><div style="font-size:0.72rem;color:var(--text-muted);">July 2026 &bull; PDF</div></div></div>
+                    <button class="abtn abtn-view" onclick="adminToast('Report downloaded!','success')"><i class="fas fa-download"></i> Download</button>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);">
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;border-radius:8px;background:rgba(52,152,219,0.1);color:#3498db;display:flex;align-items:center;justify-content:center;"><i class="fas fa-file-excel"></i></div><div><div style="font-size:0.85rem;font-weight:500;color:var(--text);">Customer Analytics</div><div style="font-size:0.72rem;color:var(--text-muted);">Q2 2026 &bull; Excel</div></div></div>
+                    <button class="abtn abtn-view" onclick="adminToast('Report downloaded!','success')"><i class="fas fa-download"></i> Download</button>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);">
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;border-radius:8px;background:rgba(200,155,60,0.1);color:var(--gold);display:flex;align-items:center;justify-content:center;"><i class="fas fa-file-chart-bar"></i></div><div><div style="font-size:0.85rem;font-weight:500;color:var(--text);">Booking Trends</div><div style="font-size:0.72rem;color:var(--text-muted);">Jan&bull;Jul 2026 &bull; PDF</div></div></div>
+                    <button class="abtn abtn-view" onclick="adminToast('Report downloaded!','success')"><i class="fas fa-download"></i> Download</button>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);">
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;border-radius:8px;background:rgba(46,204,113,0.1);color:#2ecc71;display:flex;align-items:center;justify-content:center;"><i class="fas fa-file-alt"></i></div><div><div style="font-size:0.85rem;font-weight:500;color:var(--text);">Menu Performance</div><div style="font-size:0.72rem;color:var(--text-muted);">Q2 2026 &bull; PDF</div></div></div>
+                    <button class="abtn abtn-view" onclick="adminToast('Report downloaded!','success')"><i class="fas fa-download"></i> Download</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="acard">
+              <div class="acard-head"><h3>Top Stats</h3></div>
+              <div class="acard-body">
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                  <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:0.8rem;color:var(--text-muted);">Wedding Events</span><span style="font-size:0.8rem;color:var(--text);">38%</span></div><div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;"><div style="width:38%;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--crimson-dark),var(--crimson));transition:width 1s ease;"></div></div></div>
+                  <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:0.8rem;color:var(--text-muted);">Corporate Events</span><span style="font-size:0.8rem;color:var(--text);">28%</span></div><div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;"><div style="width:28%;height:100%;border-radius:3px;background:linear-gradient(90deg,#1a6b8a,#3498db);transition:width 1s ease;"></div></div></div>
+                  <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:0.8rem;color:var(--text-muted);">Birthday Parties</span><span style="font-size:0.8rem;color:var(--text);">20%</span></div><div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;"><div style="width:20%;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold));transition:width 1s ease;"></div></div></div>
+                  <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:0.8rem;color:var(--text-muted);">Others</span><span style="font-size:0.8rem;color:var(--text);">14%</span></div><div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;"><div style="width:14%;height:100%;border-radius:3px;background:linear-gradient(90deg,#2e7d52,#2ecc71);transition:width 1s ease;"></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- -- SETTINGS SECTION -- -->
+        <section class="adash-section" id="asec-settings">
+          <div class="asec-head"><div><h2>System Settings</h2><p>Configure platform preferences and business details</p></div></div>
+          <div class="adash-row">
+            <div class="acard">
+              <div class="acard-head"><h3>Business Information</h3></div>
+              <div class="acard-body">
+                <form onsubmit="event.preventDefault();adminToast('Settings saved!','success');" style="display:flex;flex-direction:column;gap:16px;">
+                  <div class="modal-field"><label>Business Name</label><input type="text" value="Stackly Premium Catering" /></div>
+                  <div class="modal-grid">
+                    <div class="modal-field"><label>Phone</label><input type="tel" value="+91 98765 00000" /></div>
+                    <div class="modal-field"><label>Email</label><input type="email" value="hello@stackly.in" /></div>
+                  </div>
+                  <div class="modal-field"><label>Address</label><textarea style="min-height:60px;">12, Culinary Lane, Bandra West, Mumbai &bull; 400050</textarea></div>
+                  <div class="modal-field"><label>GST Number</label><input type="text" value="27AAECS1234F1Z5" /></div>
+                  <button type="submit" class="abtn abtn-add" style="width:fit-content;padding:10px 22px;"><i class="fas fa-save"></i> Save Settings</button>
+                </form>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:20px;">
+              <div class="acard">
+                <div class="acard-head"><h3>Notification Preferences</h3></div>
+                <div class="acard-body">
+                  <div style="display:flex;flex-direction:column;gap:14px;">
+                    <label style="display:flex;align-items:center;justify-content:space-between;cursor:none;">
+                      <span style="font-size:0.85rem;color:var(--text-muted);">New booking alerts</span>
+                      <input type="checkbox" checked style="accent-color:var(--crimson);width:16px;height:16px;" />
+                    </label>
+                    <label style="display:flex;align-items:center;justify-content:space-between;cursor:none;">
+                      <span style="font-size:0.85rem;color:var(--text-muted);">Payment received</span>
+                      <input type="checkbox" checked style="accent-color:var(--crimson);width:16px;height:16px;" />
+                    </label>
+                    <label style="display:flex;align-items:center;justify-content:space-between;cursor:none;">
+                      <span style="font-size:0.85rem;color:var(--text-muted);">Customer reviews</span>
+                      <input type="checkbox" style="accent-color:var(--crimson);width:16px;height:16px;" />
+                    </label>
+                    <label style="display:flex;align-items:center;justify-content:space-between;cursor:none;">
+                      <span style="font-size:0.85rem;color:var(--text-muted);">Weekly reports</span>
+                      <input type="checkbox" checked style="accent-color:var(--crimson);width:16px;height:16px;" />
+                    </label>
+                  </div>
+                  <button class="abtn abtn-add" style="margin-top:18px;padding:8px 18px;" onclick="adminToast('Preferences saved!','success')">Save</button>
+                </div>
+              </div>
+              <div class="acard">
+                <div class="acard-head"><h3>Admin Accounts</h3></div>
+                <div class="acard-body">
+                  <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                      <div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:rgba(200,54,42,0.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);color:var(--crimson);">R</div><div><div style="font-size:0.83rem;color:var(--text);">Rajan Mehta</div><div style="font-size:0.7rem;color:var(--text-muted);">Super Admin</div></div></div>
+                      <span class="sbadge sb-admin">Super</span>
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;">
+                      <div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:rgba(52,152,219,0.15);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);color:#3498db;">K</div><div><div style="font-size:0.83rem;color:var(--text);">Kavita Rao</div><div style="font-size:0.7rem;color:var(--text-muted);">Manager</div></div></div>
+                      <span class="sbadge sb-user">Manager</span>
+                    </div>
+                    <button class="abtn abtn-add" style="margin-top:6px;padding:7px 14px;font-size:0.75rem;" onclick="adminToast('Invite sent!','success')"><i class="fas fa-plus"></i> Invite Admin</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    /* -- Admin Sidebar Navigation -- */
+    function showAdminSection(name) {
+      document.querySelectorAll('.adash-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.asbr-link').forEach(l => l.classList.remove('active'));
+      const el = document.getElementById('asec-' + name);
+      const link = document.getElementById('alink-' + name);
+      if (el) el.classList.add('active');
+      if (link) link.classList.add('active');
+      document.getElementById('aTopbarTitle').textContent = link ? link.textContent.trim() : name;
+      document.getElementById('aDashSidebar').classList.remove('open');
+      document.getElementById('aSidebarOverlay').classList.remove('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Animate charts when revenue section opens
+      if (name === 'revenue') setTimeout(buildChart, 100);
+    }
+
+    document.querySelectorAll('.asbr-link').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const section = link.dataset.section;
+        if (section) showAdminSection(section);
+      });
+    });
+
+    /* Mobile Sidebar */
+    const aSidebarToggle = document.getElementById('aSidebarToggle');
+    const aDashSidebar = document.getElementById('aDashSidebar');
+    const aSidebarOverlay = document.getElementById('aSidebarOverlay');
+    const adminSidebarCloseBtn = document.getElementById('adminSidebarCloseBtn');
+    aSidebarToggle.addEventListener('click', () => {
+      aDashSidebar.classList.toggle('open');
+      aSidebarOverlay.classList.toggle('show');
+    });
+    aSidebarOverlay.addEventListener('click', () => {
+      aDashSidebar.classList.remove('open');
+      aSidebarOverlay.classList.remove('show');
+    });
+    if (adminSidebarCloseBtn) {
+      adminSidebarCloseBtn.addEventListener('click', () => {
+        aDashSidebar.classList.remove('open');
+        aSidebarOverlay.classList.remove('show');
+      });
+    }
+
+    /* -- Toast -- */
+    function adminToast(msg, type = 'info') {
+      const icons = { success:'fa-check-circle', error:'fa-exclamation-circle', info:'fa-info-circle' };
+      const container = document.getElementById('adminToasts');
+      const t = document.createElement('div');
+      t.className = `admin-toast t-${type}`;
+      t.innerHTML = `<i class="fas ${icons[type]}"></i><span>${msg}</span>`;
+      container.appendChild(t);
+      setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(28px)'; t.style.transition='all 0.3s ease'; setTimeout(()=>t.remove(),300); }, 3000);
+    }
+
+    /* -- Modals -- */
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('.admin-modal-overlay').forEach(o => {
+      o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+    });
+
+    /* -- Bar Chart Builder -- */
+    const chartData = [
+      { m:'Jan', rev:62, book:22 },
+      { m:'Feb', rev:48, book:18 },
+      { m:'Mar', rev:71, book:28 },
+      { m:'Apr', rev:55, book:20 },
+      { m:'May', rev:80, book:30 },
+      { m:'Jun', rev:94, book:35 },
+      { m:'Jul', rev:84, book:32 },
+      { m:'Aug', rev:60, book:25 },
+      { m:'Sep', rev:75, book:28 },
+      { m:'Oct', rev:88, book:33 },
+      { m:'Nov', rev:78, book:29 },
+      { m:'Dec', rev:95, book:38 },
+    ];
+    const maxVal = Math.max(...chartData.map(d => d.rev));
+
+    function buildChartInto(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container || container.children.length > 0) return;
+      chartData.forEach(d => {
+        const revH = (d.rev / maxVal) * 100;
+        const bookH = (d.book / maxVal * 0.6) * 100;
+        const group = document.createElement('div');
+        group.className = 'bar-group';
+        group.innerHTML = `
+          <div class="bar-wrap">
+            <div class="bar revenue" data-h="${revH}" style="height:0%">
+              <div class="bar-tooltip">&#8377;${d.rev}L</div>
+            </div>
+            <div class="bar bookings" data-h="${bookH}" style="height:0%">
+              <div class="bar-tooltip">${d.book} bookings</div>
+            </div>
+          </div>
+          <div class="bar-month">${d.m}</div>`;
+        container.appendChild(group);
+      });
+      setTimeout(() => {
+        container.querySelectorAll('.bar').forEach(b => {
+          b.style.height = b.dataset.h + '%';
+        });
+      }, 300);
+    }
+
+    function buildChart() {
+      buildChartInto('revenueChart');
+      buildChartInto('revenueChart2');
+    }
+
+    /* -- Donut Chart -- */
+    function buildDonut() {
+      const total = 42;
+      const data = [
+        { id: 'donut-confirmed', val: 20, color: '#2ecc71', offset: 0 },
+        { id: 'donut-pending',   val: 8,  color: '#C89B3C', offset: 0 },
+        { id: 'donut-completed', val: 11, color: '#3498db', offset: 0 },
+        { id: 'donut-cancelled', val: 3,  color: '#e74c3c', offset: 0 },
+      ];
+      const circ = 351.9;
+      let cum = 0;
+      data.forEach(d => {
+        const el = document.getElementById(d.id);
+        if (!el) return;
+        const arcLen = (d.val / total) * circ;
+        const dashOffset = circ - arcLen;
+        el.style.strokeDashoffset = circ; // start hidden
+        el.style.strokeDasharray = `${arcLen} ${circ}`;
+        el.style.strokeDashoffset = cum;
+        cum += arcLen;
+        setTimeout(() => {}, 100);
+      });
+    }
+
+    /* -- Counter Animations -- */
+    function animCounter(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || '';
+      const sep = el.dataset.sep === 'true';
+      const start = performance.now();
+      const dur = 1600;
+      function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        const val = Math.floor(e * target);
+        el.textContent = sep ? val.toLocaleString() : val + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = sep ? target.toLocaleString() : target + suffix;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* -- Filter functions -- */
+    function filterAdminBookings(query) {
+      const q = query.toLowerCase();
+      document.querySelectorAll('#adminBookingsTable tbody tr').forEach(tr => {
+        const name = (tr.dataset.customer || '').toLowerCase();
+        tr.style.display = name.includes(q) ? '' : 'none';
+      });
+    }
+    function filterAdminByStatus(btn, status) {
+      document.querySelectorAll('.tbl-fbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#adminBookingsTable tbody tr').forEach(tr => {
+        tr.style.display = (status === 'all' || tr.dataset.status === status) ? '' : 'none';
+      });
+    }
+    function setActive(btn) {
+      btn.closest('.tbl-filter-btns').querySelectorAll('.tbl-fbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    /* -- Init -- */
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        buildChart();
+        buildDonut();
+        document.querySelectorAll('.aCounter').forEach(animCounter);
+      }, 600);
+    });
+  </script>
+
+  <script>
+    /* -- Populate admin dashboard from login session -- */
+    (function () {
+      const name  = localStorage.getItem('stackly_name')  || 'Admin';
+      const email = localStorage.getItem('stackly_email') || '';
+      const initial = name.charAt(0).toUpperCase();
+
+      const avatar      = document.getElementById('adminSidebarAvatar');
+      const emailEl     = document.getElementById('adminSidebarEmail');
+      const topChip     = document.getElementById('adminTopChip');
+      const welcomeName = document.getElementById('adminWelcomeName');
+
+      if (avatar)  avatar.textContent  = initial;
+      if (emailEl) emailEl.textContent = email;
+      if (topChip) topChip.innerHTML   = '<i class="fas fa-shield-alt"></i> Admin';
+      if (welcomeName) welcomeName.textContent = name;
+    })();
+
+    function logoutSession(e) {
+      if (e) e.preventDefault();
+      localStorage.removeItem('stackly_email');
+      localStorage.removeItem('stackly_name');
+      localStorage.removeItem('stackly_role');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
